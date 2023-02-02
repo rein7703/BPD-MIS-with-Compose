@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">BPD MIS</string>
+    <string name="login">Login</string>
+    <string name="welcome_msg">pesan pesan pesan pesan pesan pesan pesan pesan pesan pesan pesan pesan</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="prompt_username">Username, Email or Phone Number</string>
+    <string name="remember_me">Remember Me?</string>
+    <string name="login_msg">Login to Your BPD MIS Account</string>
+    <string name="change_password_header">Ubah Kata Sandi</string>
+    <string name="current_password">Password Sekarang</string>
+    <string name="new_password">Password Baru</string>
+    <string name="confirm_new_password">Konfirmasi Password Baru</string>
+    <string name="selamat">Selamat!</string>
+    <string name="selamat_msg">Anda telah berhasil mengubah kata sandi anda</string>
+    <string name="kembali">Kembali ke Menu Awal</string>
+    <string name="back_button">Back Button</string>
+    <string name="bank_staff_profile">Bank Staff Profile</string>
+    <string name="setoran_modal">Setoran Modal</string>
+    <string name="indikator_keuangan_utama">Indikator Keuangan Utama</string>
+    <string name="indikator_keuangan_utama_search_result">Hasil untuk Indikator Keuangan Utama</string>
+    <string name="skedul_setoran_modal">Skedul Setoran Modal</string>
+    <string name="setoran_berdasarkan_tahun">Setoran Berdasarkan Tahun</string>
+    <string name="semua_data_setoran">Semua Data Setoran</string>
+    <string name="setoran_berdasarkan_pemda">Setoran Berdasarkan Pemda</string>
+    <string name="ubah_kata_sandi">Sign Out</string>
+    
+</resources>
