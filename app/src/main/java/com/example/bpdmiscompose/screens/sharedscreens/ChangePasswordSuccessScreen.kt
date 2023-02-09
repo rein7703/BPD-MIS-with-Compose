@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ChangePasswordSuccessScreen(modifier: Modifier = Modifier, onCancelButtonClicked : () -> Unit = {}){
+fun ChangePasswordSuccessScreen(modifier: Modifier = Modifier, onClickCancelButton : () -> Unit = {}){
     // For the Success Message, Will be at the center of the screen
     Column(
         modifier = Modifier
@@ -44,7 +44,7 @@ fun ChangePasswordSuccessScreen(modifier: Modifier = Modifier, onCancelButtonCli
             .fillMaxHeight(),
         verticalArrangement = Arrangement.Bottom
     ) {
-        OutlinedButton(onClick = onCancelButtonClicked, colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent, contentColor = Color.White ), border = BorderStroke(1.dp, Color.White), modifier = Modifier
+        OutlinedButton(onClick = onClickCancelButton, colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent, contentColor = Color.White ), border = BorderStroke(1.dp, Color.White), modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp) ) {
             Text(stringResource(R.string.kembali), fontFamily = roboto, fontWeight = FontWeight.Medium)

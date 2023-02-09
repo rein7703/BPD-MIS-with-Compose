@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LandingScreen(modifier : Modifier = Modifier, onNextButtonClicked: () -> Unit = {}, ) {
+fun LandingScreen(modifier : Modifier = Modifier, onClickNextButton: () -> Unit = {}, ) {
     /*val montserrat = FontFamily(
         Font(R.font.montserrat_light, FontWeight.Light),
         Font(R.font.montserrat_medium, FontWeight.Medium),
@@ -40,7 +40,7 @@ fun LandingScreen(modifier : Modifier = Modifier, onNextButtonClicked: () -> Uni
         Text(stringResource(R.string.welcome), color = Color.White, textAlign = TextAlign.Center, fontSize = 20.sp, fontFamily = roboto, fontWeight = FontWeight.Medium)
         Text(stringResource(R.string.welcome_msg), color = Color.White, textAlign = TextAlign.Center, fontSize = 15.sp, fontFamily = roboto, fontWeight = FontWeight.Normal )
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = onNextButtonClicked, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF0085FF), contentColor = Color.White), modifier = Modifier
+        Button(onClick = onClickNextButton, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF0085FF), contentColor = Color.White), modifier = Modifier
             .fillMaxWidth()
             .padding(start = 3.dp, end = 3.dp)) {
 
