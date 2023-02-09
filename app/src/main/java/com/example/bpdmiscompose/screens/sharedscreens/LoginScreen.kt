@@ -1,6 +1,7 @@
 package com.example.bpdmiscompose
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -14,12 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.bpdmiscompose.components.RememberMeCheckbox
 import com.example.bpdmiscompose.components.TextInputBox
 import com.example.bpdmiscompose.components.TextInputBoxPassword
@@ -46,8 +45,14 @@ fun LoginScreen(modifier : Modifier = Modifier, onStaffButtonClicked: () -> Unit
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start
             ) {
-
-                Text(stringResource(R.string.login_msg), fontFamily = roboto, fontWeight = FontWeight.Medium, color = Color.Black, textAlign = TextAlign.Center, fontSize = 36.sp)
+                Image(
+                    painter = painterResource(id = R.drawable.logo_bpd_color_adjusted),
+                    contentDescription = "Logo BPDMIS",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .padding(bottom = 50.dp)
+                )
                 TextInputBox(label = R.string.prompt_username, modifier = Modifier.fillMaxWidth(), focusManager = focusManager)
                 Spacer(modifier = Modifier.height(8.dp))
                 TextInputBoxPassword(label = R.string.prompt_password, modifier = Modifier.fillMaxWidth(), focusManager = focusManager)
