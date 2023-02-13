@@ -5,7 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.bpdmiscompose.*
+import com.example.bpdmiscompose.BPDMISScreen
+import com.example.bpdmiscompose.ChangePasswordScreen
+import com.example.bpdmiscompose.ChangePasswordSuccessScreen
+import com.example.bpdmiscompose.Graph
 
 
 /*
@@ -23,11 +26,12 @@ fun changeNavGraph(
 } */
 
 fun NavGraphBuilder.changeNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+
 ){
     navigation(
         startDestination = BPDMISScreen.ChangePassword.name,
-        route = ChangePasswordRoute
+        route = Graph.ChangePasswordRoute.name
     ){
         //Go to Change Password Page
         composable (route = BPDMISScreen.ChangePassword.name){
@@ -45,15 +49,13 @@ fun NavGraphBuilder.changeNavGraph(
         composable(route = BPDMISScreen.ChangePasswordSuccess.name){
             ChangePasswordSuccessScreen(
                 onClickCancelButton = {
-                    navController.navigate(route = BPDMISScreen.Landing.name){
-                        popUpTo(BPDMISScreen.ChangePasswordSuccess.name){inclusive = true}
+                    navController.navigate(route = Graph.LandingRoute.name){
+                        popUpTo(navController.graph.findStartDestination().id){
+                            inclusive = true
+                        }
                     }
                 }
             )
-        }
-
-        composable(route = BPDMISScreen.Landing.name){
-            BPDMISApp()
         }
     }
 

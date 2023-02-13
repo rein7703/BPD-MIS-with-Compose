@@ -19,6 +19,7 @@ import com.example.bpdmiscompose.screens.PemdaSetoranSahamScreen
 fun pemdaNavGraph(
     navController: NavHostController,
     modifier : Modifier = Modifier,
+
 ){
     NavHost(
         navController= navController,
@@ -30,14 +31,16 @@ fun pemdaNavGraph(
         }
 
         pemdaNavGraphBuild(navController = navController)
-        landingNavGraph(navController = navController)
         changeNavGraph(navController = navController)
+        //landingNavGraph(navController = navController, auth = auth)
     }
 }
 
 
 fun NavGraphBuilder.pemdaNavGraphBuild(
-    navController: NavHostController
+    navController: NavHostController,
+
+
 ){
     navigation(
         startDestination = BPDMISScreen.PemdaFront.name,
@@ -47,5 +50,6 @@ fun NavGraphBuilder.pemdaNavGraphBuild(
         composable(route = BPDMISScreen.PemdaFront.name){
             Text(text = "ZZZZZZZZZZZZZz", fontSize = 80.sp)
         }
+
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -23,7 +24,6 @@ import com.example.bpdmiscompose.components.Drawer
 import com.example.bpdmiscompose.components.TopBarBack
 import com.example.bpdmiscompose.components.TopBarMenu
 import com.example.bpdmiscompose.nav.pemdaNavGraph
-import com.example.bpdmiscompose.screens.popUpToTop
 import kotlinx.coroutines.launch
 
 
@@ -33,6 +33,8 @@ fun PemdaScreen(
     onClickChangePassword : String,
     onClickSignOut : String,
     navController: NavHostController = rememberNavController(),
+    navControllerOut : NavHostController,
+
 ){
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -43,7 +45,7 @@ fun PemdaScreen(
             textColor = MaterialTheme.colors.onPrimary,
             outlined = true,
             onButtonClick = {
-                navController.navigate(route = onClickChangePassword)
+                navControllerOut.navigate(route = onClickChangePassword)
             }
         ),
         ButtonInfo(
@@ -51,9 +53,9 @@ fun PemdaScreen(
             backgroundColor = Color.Red,
             textColor = MaterialTheme.colors.onPrimary,
             onButtonClick = {
-                navController.navigate(
+                navControllerOut.navigate(
                     route = onClickSignOut){
-                    popUpToTop(navController)
+                    popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }
                 }
             }
         )

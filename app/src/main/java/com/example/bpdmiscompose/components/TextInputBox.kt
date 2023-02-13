@@ -29,7 +29,7 @@ fun TextInputBox(
     var usernameInput by remember { mutableStateOf("") }
     OutlinedTextField(
         value = usernameInput,
-        onValueChange = {usernameInput = it},
+        onValueChange = onValueChange,
         label = { Text(stringResource(label), fontFamily = roboto, fontWeight = FontWeight.Normal, color = Color(0xFF757575)) },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.White,

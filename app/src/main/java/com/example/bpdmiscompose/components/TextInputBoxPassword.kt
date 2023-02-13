@@ -23,15 +23,16 @@ import com.example.bpdmiscompose.roboto
 @Composable
 fun TextInputBoxPassword(
     @StringRes label: Int,
+    value : String = "",
     onValueChange: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     focusManager: FocusManager,
 ) {
-    var passwordInput by rememberSaveable { mutableStateOf("") }
+
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     OutlinedTextField(
-        value = passwordInput,
-        onValueChange = {passwordInput = it},
+        value = value,
+        onValueChange = onValueChange,
         label = { Text(stringResource(label), fontFamily = roboto, fontWeight = FontWeight.Normal, color = Color(0xFF757575)) },
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         colors = TextFieldDefaults.textFieldColors(

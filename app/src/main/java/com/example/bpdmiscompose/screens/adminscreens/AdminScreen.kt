@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -27,7 +28,9 @@ import com.example.bpdmiscompose.components.Drawer
 import com.example.bpdmiscompose.components.TopBarBack
 import com.example.bpdmiscompose.components.TopBarMenu
 import com.example.bpdmiscompose.nav.adminNavGraph
+import com.example.bpdmiscompose.ui.BankStaffUiState
 import com.example.bpdmiscompose.ui.BankStaffViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
@@ -37,14 +40,16 @@ fun NavOptionsBuilder.popUpToTop(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
 fun AdminScreen(
     modifier: Modifier = Modifier,
     bankStaffViewModel : BankStaffViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
+    navControllerOut:NavHostController,
     onClickSignOut : String = "",
     onClickChangePassword : String = "",
+
 ){
     val BankStaffUiState by bankStaffViewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -68,17 +73,17 @@ fun AdminScreen(
             destination = BPDMISScreen.AdminIndikatorKeuangan.name)
     )
     val buttonItems = listOf<ButtonInfo>(
-        ButtonInfo(stringResource(R.string.change_password_header), backgroundColor = Color.Transparent, textColor = MaterialTheme.colors.onPrimary,outlined = true, onButtonClick = {navController.navigate(route = onClickChangePassword) }),
+        ButtonInfo(stringResource(R.string.change_password_header), backgroundColor = Color.Transparent, textColor = MaterialTheme.colors.onPrimary,outlined = true, onButtonClick = {navControllerOut.navigate(route = onClickChangePassword) }),
         ButtonInfo(
             stringResource(R.string.sign_out),
             backgroundColor = Color.Red,
             textColor = MaterialTheme.colors.onPrimary,
             onButtonClick = {
-                navController.navigate(
+                navControllerOut.navigate(
                     route = onClickSignOut,
                 ){
                     launchSingleTop = true
-                    popUpToTop(navController)
+                    popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }
                 }
             }
         )

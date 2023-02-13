@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "260265332935",
+    "project_id": "bpd-mis-compose",
+    "storage_bucket": "bpd-mis-compose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260265332935:android:330c12c09c33cbebf62ee2",
+        "android_client_info": {
+          "package_name": "com.example.bpdmiscompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260265332935-32eecruu6icppr9d8cqibbkmag0ia5jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnGmoOLHLT7dih4n-QPsoAKB6Sl5-Hx9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260265332935-32eecruu6icppr9d8cqibbkmag0ia5jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

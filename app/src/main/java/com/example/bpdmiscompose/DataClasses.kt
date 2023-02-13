@@ -34,3 +34,5 @@ enum class BankStaffScreen(@StringRes val title:Int){
 
 
 
+class SignInActivity {
+}

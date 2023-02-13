@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import androidx.navigation.compose.navigation
 import com.example.bpdmiscompose.*
 import com.example.bpdmiscompose.screens.staffscreens.*
 import com.example.bpdmiscompose.ui.BankStaffUiState
@@ -14,15 +14,16 @@ import com.example.bpdmiscompose.ui.BankStaffUiState
 @Composable
 fun staffNavGraph(
     navController: NavHostController,
-    BankStaffUiState: BankStaffUiState
+    BankStaffUiState: BankStaffUiState = BankStaffUiState(),
+
 ){
     NavHost(
         navController= navController,
-        route = StaffRoute,
+        route = Graph.StaffRoute.name,
         startDestination = BPDMISScreen.Profile.name
     ){
         composable(route = BPDMISScreen.Profile.name) {
-            BankStaffUiState.enableProfileButton = false
+            //BankStaffUiState.enableProfileButton = false
             BankStaffProfileLayout(
                 staffName = BankStaffUiState.staffName,
                 staffJabatan = BankStaffUiState.staffJabatan,
@@ -31,19 +32,17 @@ fun staffNavGraph(
                 staffPhoneNumber = BankStaffUiState.staffPhoneNumber,
                 staffId = BankStaffUiState.staffID,
             )
-
         }
-        staffNavGraphBuild(navController, BankStaffUiState)
+        staffNavGraphBuild(navController, BankStaffUiState = BankStaffUiState)
         changeNavGraph(navController = navController)
-        landingNavGraph(navController)
-        //val BankStaffUiState by bankStaffViewModel.uiState.collectAsState()
-
+        //landingNavGraph(navController = navController, auth = auth)
     }
 }
 
 fun NavGraphBuilder.staffNavGraphBuild(
     navController: NavHostController,
-    BankStaffUiState: BankStaffUiState
+    BankStaffUiState: BankStaffUiState,
+
 ){
     navigation(
         //navController = navController,
@@ -83,8 +82,6 @@ fun NavGraphBuilder.staffNavGraphBuild(
             StaffIndikatorSearchResultScreen()
         }
 
-
-        //landingNavGraph(navController = navController)
     }
 }
 

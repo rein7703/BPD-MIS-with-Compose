@@ -143,4 +143,16 @@
     <string name="non_aktif">Non Aktif</string>
     <string name="status_keaktifan">Status Keaktifan</string>
     <string name="id">ID</string>
+    <string name="update">Update</string>
+    <string name="abc">abc</string>
+    <string name="staff_route">staff</string>
+    <string name="home_route">home</string>
+    <string name="auth_route">auth</string>
+    <string name="pemda_route">pemda</string>
+    <string name="change_password_route">change</string>
+    <string name="staff_branch">staff_branch</string>
+    <string name="pemda_branch">pemda_branch</string>
+    <string name="admin_route">admin_route</string>
+    <string name="staff">staff</string>
+    <string name="landing_route">landing_route</string>
 </resources>

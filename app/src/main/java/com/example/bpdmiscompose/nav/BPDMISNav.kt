@@ -7,15 +7,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import com.example.bpdmiscompose.models.AuthViewModel
+import com.example.bpdmiscompose.nav.authNavGraph
 import com.example.bpdmiscompose.nav.changeNavGraph
-import com.example.bpdmiscompose.nav.landingNavGraph
-import com.example.bpdmiscompose.nav.pemdaNavGraphBuild
-import com.example.bpdmiscompose.nav.staffNavGraphBuild
-import com.example.bpdmiscompose.ui.BankStaffUiState
+import com.example.bpdmiscompose.screens.AdminScreen
+import com.google.firebase.auth.FirebaseAuth
 
 
 val roboto = FontFamily(
@@ -25,9 +28,22 @@ val roboto = FontFamily(
     Font(R.font.roboto_light, FontWeight.Light)
 )
 
+enum class Graph(@StringRes val title:Int){
+    HomeRoute ( title = R.string.home_route),
+    StaffRoute ( title = R.string.staff_route),
+    AuthRoute ( title = R.string.auth_route),
+    PemdaRoute (title = R.string.pemda_route),
+    ChangePasswordRoute (title = R.string.change_password_route),
+    StaffBranchRoute ( title = R.string.staff_route),
+    PemdaBranchRoute ( title = R.string.pemda_branch),
+    AdminBranchRoute (title = R.string.admin_branch),
+    AdminRoute (title = R.string.admin_route),
+    LandingRoute(title = R.string.landing_route)
+}
+
 const val HomeRoute = "home"
 const val StaffRoute = "staff"
-const val LandingRoute = "land"
+const val AuthRoute = "auth"
 const val PemdaRoute = "pemda"
 const val ChangePasswordRoute = "change"
 const val StaffBranchRoute = "staff_branch"
@@ -65,11 +81,17 @@ enum class BPDMISScreen(@StringRes val title:Int){
     AdminSkedulAdd(title = R.string.admin_skedul_add),
     AdminSkedulCRUD(title = R.string.admin_skedul_crud),
     AdminManajemenPenggunaAdd(title = R.string.admin_manajemen_pengguna_add),
+    abc(title = R.string.abc)
 }
 
+
 @Composable
-fun BPDMISApp(modifier: Modifier = Modifier){
-    val navController = rememberNavController()
+fun BPDMISApp(
+    viewModel : AuthViewModel,
+    modifier: Modifier = Modifier,
+
+){
+    val navController : NavHostController = rememberNavController()
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
@@ -78,28 +100,60 @@ fun BPDMISApp(modifier: Modifier = Modifier){
     )
     NavHost(
         navController = navController,
-        startDestination = BPDMISScreen.Landing.name,
-        route = HomeRoute
+        startDestination = Graph.LandingRoute.name,
+        route = Graph.HomeRoute.name,
+    ){
+        landingNavGraph(viewModel = viewModel, navController = navController)
+    }
+}
+
+fun NavGraphBuilder.landingNavGraph(
+    viewModel: AuthViewModel,
+    navController : NavHostController,
+
+){
+    navigation(
+        route = Graph.LandingRoute.name,
+        startDestination = BPDMISScreen.Landing.name
     ){
         composable(route = BPDMISScreen.Landing.name){
             LandingScreen(
                 onClickNextButton = {
-                    navController.navigate(BPDMISScreen.Login.name){
-                        popUpTo(0){inclusive = true}
-                    }
+                    navController.navigate(Graph.AuthRoute.name)
                 }
             )
         }
-        landingNavGraph(navController = navController)
-        staffNavGraphBuild(navController = navController, BankStaffUiState())
-        changeNavGraph(navController = navController)
-        pemdaNavGraphBuild(navController = navController)
+        authNavGraph(viewModel = viewModel, navController = navController)
+        composable(route = BPDMISScreen.StaffPage.name){
+            BankStaffScreen(
+                navControllerOut = navController,
+                onClickChangePassword = Graph.ChangePasswordRoute.name,
+                onClickSignOut = Graph.LandingRoute.name,
 
+            )
+        }
+        composable(route = BPDMISScreen.Pemda.name){
+            PemdaScreen(
+                navControllerOut = navController,
+                onClickChangePassword = Graph.ChangePasswordRoute.name,
+                onClickSignOut = Graph.LandingRoute.name,
+
+            )
+        }
+        changeNavGraph(
+            navController = navController,
+
+        )
+        composable(route = BPDMISScreen.AdminPage.name){
+            AdminScreen(
+                navControllerOut = navController,
+                onClickChangePassword = Graph.ChangePasswordRoute.name,
+                onClickSignOut = Graph.LandingRoute.name,
+
+            )
+        }
     }
-
 }
-
-
 // MyApp.kt
 
 

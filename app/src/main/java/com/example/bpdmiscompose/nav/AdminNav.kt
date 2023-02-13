@@ -26,6 +26,7 @@ import com.example.bpdmiscompose.screens.staffscreens.StaffSetoranBerdasarkanTah
 fun adminNavGraph(
     navController: NavHostController,
     modifier : Modifier = Modifier,
+
 ){
     NavHost(
         navController= navController,
@@ -44,8 +45,8 @@ fun adminNavGraph(
         }
 
         adminNavGraphBuild(navController = navController)
-        landingNavGraph(navController = navController)
         changeNavGraph(navController = navController)
+        //landingNavGraph(navController = navController, auth = auth)
     }
 }
 

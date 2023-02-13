@@ -21,17 +21,21 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bpdmiscompose.components.*
 import com.example.bpdmiscompose.nav.staffNavGraph
+import com.example.bpdmiscompose.ui.BankStaffUiState
 import com.example.bpdmiscompose.ui.BankStaffViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
-@Preview(showBackground = true)
+
 @Composable
 fun BankStaffScreen(
     modifier: Modifier = Modifier,
     bankStaffViewModel : BankStaffViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
+    navControllerOut : NavHostController,
     onClickSignOut : String = "",
     onClickChangePassword : String = "",
+
 ){
     val BankStaffUiState by bankStaffViewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -42,8 +46,8 @@ fun BankStaffScreen(
         TextAndIcon(stringResource(BPDMISScreen.ReadIndikatorKeuangan.title), Icons.Filled.Insights, destination = BPDMISScreen.ReadIndikatorKeuangan.name)
     )
     val buttonItems = listOf<ButtonInfo>(
-        ButtonInfo(stringResource(R.string.change_password_header), backgroundColor = Color.Transparent, textColor = MaterialTheme.colors.onPrimary,outlined = true, onButtonClick = {navController.navigate(route = onClickChangePassword) }),
-        ButtonInfo(stringResource(R.string.sign_out), backgroundColor = Color.Red, textColor = MaterialTheme.colors.onPrimary, onButtonClick = { navController.navigate(route = onClickSignOut){popUpTo(navController.graph.findStartDestination().id){inclusive = true }} })
+        ButtonInfo(stringResource(R.string.change_password_header), backgroundColor = Color.Transparent, textColor = MaterialTheme.colors.onPrimary,outlined = true, onButtonClick = {navControllerOut.navigate(route = onClickChangePassword) }),
+        ButtonInfo(stringResource(R.string.sign_out), backgroundColor = Color.Red, textColor = MaterialTheme.colors.onPrimary, onButtonClick = { navControllerOut.navigate(route = onClickSignOut){popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }} })
     )
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = BPDMISScreen.valueOf(
@@ -97,8 +101,8 @@ fun BankStaffScreen(
         drawerContent = if(!topBarMenuState.value) null else {{
             Drawer(
                 icon = Icons.Filled.AccountCircle,
-                name = BankStaffUiState.staffName,
-                jabatan = BankStaffUiState.staffJabatan,
+                name = stringResource(id = R.string.nama),
+                jabatan = stringResource(id = R.string.jabatan),
                 items = drawerItems,
                 buttons = buttonItems,
                 navController = navController,

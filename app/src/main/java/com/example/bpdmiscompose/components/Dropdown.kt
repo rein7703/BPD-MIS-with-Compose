@@ -1,5 +1,6 @@
 package com.example.bpdmiscompose.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +28,8 @@ fun Dropdown(
     items : List<String> = emptyList(),
     label : String ="",
     default : String = "",
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    color: Color = Color.Transparent
 ){
     var selectedItem by remember { mutableStateOf(default) }
     var expandedState by remember { mutableStateOf(false) }
@@ -52,6 +54,7 @@ fun Dropdown(
                         // the DropDown the same width
                         textFieldSize = coordinates.size.toSize()
                     }
+                    .background(color = color)
                     .clickable {expandedState = !expandedState},
                 label = { Text(label, color = MaterialTheme.colors.onSurface, fontSize = 12.sp) },
                 trailingIcon = {
