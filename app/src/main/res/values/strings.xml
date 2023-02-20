@@ -55,6 +55,7 @@
     <string name="admin_indikator_add">Add Data to Indikator Keuangan Utama</string>
     <string name="admin_indikator_search_result">Admin Hasil Penelusuran Kinerja</string>
     <string name="admin_semua_setoran">Admin Semua Data Setoran</string>
+    <string name="admin_setoran_update">Admin Update Data Setoran</string>
     <string name="admin_skedul_add">Add Data to Skedul Setoran</string>
     <string name="admin_pengguna_add">Add Data to Pengguna</string>
     <string name="admin_update_row">Update Row</string>
@@ -157,4 +158,5 @@
     <string name="landing_route">landing_route</string>
     <string name="EditData">Edit Data</string>
     <string name="DeleteData">Delete Data</string>
+    <string name="data_berhasil_diubah">Data Berhasil Diubah</string>
 </resources>

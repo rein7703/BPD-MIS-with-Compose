@@ -1,8 +1,6 @@
 package com.example.bpdmiscompose.ViewModels
 
-import android.content.ContentValues
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +25,7 @@ class StaffSetoranModalViewModel @Inject constructor (
     val currentUser = repository.currentUser
     var hasUser by mutableStateOf(false)
     var userId by mutableStateOf("")
+
 
     init {
         viewModelScope.launch {
@@ -151,35 +150,9 @@ class StaffSetoranModalViewModel @Inject constructor (
         timestamp: Timestamp = Timestamp.now(),
         onComplete : (Boolean) -> Unit = {}
     ) = viewModelScope.launch {
-        repository.getPemdaByYear(tahun).collect(){
-            staffSetoranModalUiState = staffSetoranModalUiState.copy(pemdaList = it)
-        }
 
-        val pemdaList = staffSetoranModalUiState.pemdaList.data?.map{it}
-        Log.i(ContentValues.TAG, "Pemda yang sudah terdaftar: $pemdaList")
-
-
-        if (pemdaList != null) {
-            try{
-                require(!pemdaList.contains(pemdaId)){"Data ${pemdaId} untuk tahun ${tahun.toString()} sudah ada. Mohon hapus atau ubah data"}
-                repository.addSetoran(
-                    userId,
-                    pemdaId,
-                    tahun,
-                    modalDisetorRUPS,
-                    komposisiRUPS,
-                    realisasiDanaSetoranModal,
-                    totalModalDesember,
-                    timestamp,
-                    onComplete
-                )
-                Toast.makeText(context, "Data Berhasil Ditambahkan", Toast.LENGTH_SHORT).show()
-
-            } catch (e: Exception){
-                onComplete(false)
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-            }
-        } else {
+        try{
+            //require(!pemdaList.contains(pemdaId)){"Data ${pemdaId} untuk tahun ${tahun.toString()} sudah ada. Mohon hapus atau ubah data"}
             repository.addSetoran(
                 userId,
                 pemdaId,
@@ -191,23 +164,71 @@ class StaffSetoranModalViewModel @Inject constructor (
                 timestamp,
                 onComplete
             )
+            Toast.makeText(context, "Data Berhasil Ditambahkan", Toast.LENGTH_SHORT).show()
+
+        } catch (e: Exception){
+            onComplete(false)
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    fun updateSetoran(
+        context : Context,
+        userId : String,
+        setoranId : String,
+        pemdaId : String,
+        tahun: Int,
+        modalDisetorRUPS:Long,
+        komposisiRUPS: Int,
+        realisasiDanaSetoranModal: Long,
+        totalModalDesember: Long,
+        timestamp: Timestamp = Timestamp.now(),
+    ) = viewModelScope.launch {
+        try {
+            repository.updateSetoran(
+                setoranId,
+                pemdaId,
+                tahun,
+                modalDisetorRUPS,
+                komposisiRUPS,
+                realisasiDanaSetoranModal,
+                totalModalDesember,
+                timestamp,
+            )
+            Toast.makeText(context, "Data Berhasil Diubah!!!", Toast.LENGTH_SHORT).show()
+
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
-
-
-
-
-
+    fun setChosenIdToEdit(id: String) = viewModelScope.launch {
+            staffSetoranModalUiState = staffSetoranModalUiState.copy(chosenIdToEdit = id)
+        }
+    fun getSingleSetoran(setoranId: String) = viewModelScope.launch {
+        repository.getSingleSetoran(setoranId).collect() {
+            staffSetoranModalUiState = staffSetoranModalUiState.copy(setoranChosen = it)
+        }
 
     }
+
+
+
+
+
+
+
+
 
 }
 
 data class  StaffSetoranModalUiState(
     val yearList : Resources<List<Int>> = Resources.Loading(),
     val setoranList : Resources<List<SetoranModal>> = Resources.Loading(),
-    val pemdaList : Resources<List<String>> = Resources.Loading()
+    val pemdaList : Resources<List<String>> = Resources.Loading(),
+    var chosenIdToEdit : String = "",
+    var setoranChosen : Resources<SetoranModal> = Resources.Loading(),
 )
 

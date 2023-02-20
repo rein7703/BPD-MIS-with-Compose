@@ -1,5 +1,7 @@
 package com.example.bpdmiscompose.repositories
 
+import android.content.ContentValues
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -58,19 +60,18 @@ class SetoranModalRepositoryImpl @Inject constructor(
 
     override suspend fun getSingleSetoran(
         setoranId: String,
-        onError: (Throwable?) -> Unit,
-        onSuccess: (SetoranModal) -> Unit,
-    ) {
-        setoranModalRef
-            .document(setoranId)
-            .get()
-            .addOnSuccessListener {
-                val setoranInvocation = it.toObject(SetoranModal::class.java)
-                if (setoranInvocation != null) onSuccess.invoke(setoranInvocation)
-            }
-            .addOnFailureListener { result ->
-                onError.invoke(result.cause)
-            }
+    ) : Flow<Resources<SetoranModal>> = flow{
+        try {
+            val result = setoranModalRef.document(setoranId).get().await()
+            val resultAsClass = result.toObject(SetoranModal::class.java)
+            emit(Resources.Success(resultAsClass))
+            Log.i(ContentValues.TAG, "${Resources.Success(resultAsClass.toString())}")
+
+
+        } catch (e: Exception) {
+            emit(Resources.Error(e))
+        }
+
     }
 
     override suspend fun getSetoranByTahun(
@@ -109,16 +110,24 @@ class SetoranModalRepositoryImpl @Inject constructor(
         timestamp: Timestamp,
         onComplete : (Boolean) -> Unit
     ){
-        val documentId = setoranModalRef.document().id
-        val setoran = SetoranModal(pemdaId, tahun, modalDisetorRUPS, komposisiRUPS, realisasiDanaSetoranModal, totalModalDesember, timestamp,
-            documentId = documentId
-        )
-        setoranModalRef
-            .document(documentId)
-            .set(setoran)
-            .addOnCompleteListener{result->
-                onComplete.invoke(result.isSuccessful)
-            }
+
+        val doc = setoranModalRef.whereEqualTo("pemdaId", pemdaId).whereEqualTo("tahun", tahun).get().await()
+        if(doc.isEmpty){
+            val documentId = setoranModalRef.document().id
+            val setoran = SetoranModal(pemdaId, tahun, modalDisetorRUPS, komposisiRUPS, realisasiDanaSetoranModal, totalModalDesember, timestamp,
+                documentId = documentId
+            )
+            setoranModalRef
+                .document(documentId)
+                .set(setoran)
+                .addOnCompleteListener{result->
+                    onComplete.invoke(result.isSuccessful)
+                }
+        }else {
+            onComplete.invoke(false)
+            throw Exception("Data pemda $pemdaId pada tahun $tahun sudah ada. Mohon lakukan perubahan atau hapus data.")
+        }
+
     }
 
     override fun deleteSetoran (setoranId: String, onComplete: (Boolean) -> Unit){
@@ -140,22 +149,30 @@ class SetoranModalRepositoryImpl @Inject constructor(
         timestamp: Timestamp,
         onResult : (Boolean) -> Unit
     ){
-        val updateData = hashMapOf<String, Any>(
-            "pemdaId" to pemdaId,
-            "tahun" to tahun,
-            "modalDisetorRUPS" to modalDisetorRUPS,
-            "komposisiRUPS" to komposisiRUPS,
-            "realisasiDanaSetoranModal" to realisasiDanaSetoranModal,
-            "totalModalDesember" to totalModalDesember,
-            "timestamp" to timestamp
-        )
 
-        setoranModalRef
-            .document(setoranId)
-            .update(updateData)
-            .addOnCompleteListener{result ->
-                onResult.invoke(result.isSuccessful)
-            }
+        val doc = setoranModalRef.whereEqualTo("pemdaId", pemdaId).whereEqualTo("tahun", tahun).get().await()
+        if (doc.isEmpty || doc.documents[0].id == setoranId){
+            val updateData = hashMapOf<String, Any>(
+                "pemdaId" to pemdaId,
+                "tahun" to tahun,
+                "modalDisetorRUPS" to modalDisetorRUPS,
+                "komposisiRUPS" to komposisiRUPS,
+                "realisasiDanaSetoranModal" to realisasiDanaSetoranModal,
+                "totalModalDesember" to totalModalDesember,
+                "timestamp" to timestamp
+            )
+
+            setoranModalRef
+                .document(setoranId)
+                .update(updateData)
+                .addOnCompleteListener{result ->
+                    onResult.invoke(result.isSuccessful)
+                }
+        } else {
+            onResult.invoke(false)
+            throw Exception("Data pemda $pemdaId pada tahun $tahun sudah ada. Mohon lakukan perubahan pada kombinasi pemda dan tahun yang sama.")
+        }
+
     }
 
     override suspend fun getAllYears() : Flow<Resources<List<Int>>> = flow{

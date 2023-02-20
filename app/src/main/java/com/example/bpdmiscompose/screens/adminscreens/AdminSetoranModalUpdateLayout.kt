@@ -23,16 +23,17 @@ import com.example.bpdmiscompose.components.TextInputBox
 import com.example.bpdmiscompose.dataClass.PemdaDataClass
 
 @Composable
-fun AdminSetoranAddLayout(staffSetoranModalViewModel: StaffSetoranModalViewModel){
+fun AdminSetoranUpdateLayout(staffSetoranModalViewModel: StaffSetoranModalViewModel){
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+
     val staffSetoranModalUiState = staffSetoranModalViewModel.staffSetoranModalUiState
-    var tahunChosen by remember{ mutableStateOf("") }
-    var pemdaChosen by remember{ mutableStateOf("") }
-    var modalChosen by remember{ mutableStateOf("") }
-    var komposisiChosen by remember{ mutableStateOf("") }
-    var realisasiChosen by remember{ mutableStateOf("") }
-    var totalChosen by remember{ mutableStateOf("") }
+    var tahunChosen by remember{ mutableStateOf(staffSetoranModalUiState.setoranChosen.data?.tahun.toString()) }
+    var pemdaChosen by remember{ mutableStateOf(staffSetoranModalUiState.setoranChosen.data?.pemdaId) }
+    var modalChosen by remember{ mutableStateOf(staffSetoranModalUiState.setoranChosen.data?.modalDisetorRUPS.toString()) }
+    var komposisiChosen by remember{ mutableStateOf(staffSetoranModalUiState.setoranChosen.data?.komposisiRUPS.toString()) }
+    var realisasiChosen by remember{ mutableStateOf(staffSetoranModalUiState.setoranChosen.data?.realisasiDanaSetoranModal.toString()) }
+    var totalChosen by remember{ mutableStateOf(staffSetoranModalUiState.setoranChosen.data?.totalModalDesember.toString()) }
     LazyColumn(modifier = Modifier
         .padding(10.dp)
         .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) }
@@ -61,7 +62,7 @@ fun AdminSetoranAddLayout(staffSetoranModalViewModel: StaffSetoranModalViewModel
             Dropdown(
                 pemda,
                 label = stringResource(id = R.string.pilih_pemda),
-                default = stringResource(id = R.string.pilih_pemda),
+                default = pemdaChosen ?: stringResource(id = R.string.pilih_pemda),
                 onItemSelected = { pemdaChosen = it },
                 modifier = Modifier
                     .fillMaxSize()
@@ -111,6 +112,7 @@ fun AdminSetoranAddLayout(staffSetoranModalViewModel: StaffSetoranModalViewModel
                 focusManager = focusManager,
                 keyboardType = KeyboardType.Number
             )
+
         }
 
         //Button
@@ -124,9 +126,8 @@ fun AdminSetoranAddLayout(staffSetoranModalViewModel: StaffSetoranModalViewModel
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)){
-                    val msg = stringResource(id = R.string.data_berhasil_ditambahkan)
+                    val msg = stringResource(id = R.string.data_berhasil_diubah)
                     Button(onClick = {
-
                         try{
                             require((Regex("^\\d{1,4}\$").matches(tahunChosen))){"Tahun kosong atau tidak valid. Mohon periksa kembali."}
                             require((pemdaChosen != "")){"Pemda kosong atau tidak valid. Mohon periksa kembali."}
@@ -135,45 +136,29 @@ fun AdminSetoranAddLayout(staffSetoranModalViewModel: StaffSetoranModalViewModel
                             require((Regex("^\\d{1,9}\$").matches(realisasiChosen))){"Realisasi kosong atau tidak valid. Mohon pastikan data dalam juta rupiah."}
                             require((Regex("^\\d{1,9}\$").matches(totalChosen))){"Total kosong atau tidak valid. Mohon pastikan data dalam juta rupiah."}
 
-
-                            staffSetoranModalViewModel.addData(
+                            staffSetoranModalViewModel.updateSetoran(
                                 context = context,
-                                pemdaId = pemdaChosen,
+                                userId = staffSetoranModalViewModel.userId,
+                                setoranId = staffSetoranModalUiState.setoranChosen.data?.documentId.toString(),
+                                pemdaId = pemdaChosen.toString(),
                                 tahun = tahunChosen.toInt(),
                                 modalDisetorRUPS = modalChosen.toLong(),
                                 komposisiRUPS = komposisiChosen.toInt(),
                                 realisasiDanaSetoranModal = realisasiChosen.toLong(),
                                 totalModalDesember = totalChosen.toLong(),
-                                onComplete = {}
                             )
+
+
+
                         } catch(e: Exception){
                             Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                         }
                     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(20.dp)
                     ) {
-                        Text(text = stringResource(id = R.string.add))
+                        Text(text = stringResource(id = R.string.update))
                     }
                 }
             }

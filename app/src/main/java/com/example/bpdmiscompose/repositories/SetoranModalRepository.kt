@@ -9,7 +9,7 @@ interface SetoranModalRepository {
     suspend fun hasUser(): Boolean
     suspend fun getUserId():String
     suspend fun getAllSetoranModal(): Flow<Resources<List<SetoranModal>>>
-    suspend fun getSingleSetoran(setoranId:String, onError: (Throwable?) -> Unit, onSuccess:(SetoranModal) -> Unit)
+    suspend fun getSingleSetoran(setoranId:String): Flow<Resources<SetoranModal>>
     suspend fun getSetoranByTahun(tahun:Int): Flow<Resources<List<SetoranModal>>>
     suspend fun addSetoran(
         userId : String,
@@ -31,7 +31,7 @@ interface SetoranModalRepository {
                               realisasiDanaSetoranModal: Long ,
                               totalModalDesember: Long ,
                               timestamp: Timestamp,
-                              onResult : (Boolean) -> Unit
+                              onResult : (Boolean) -> Unit = {}
     )
     fun deleteSetoran(setoranId: String, onComplete:(Boolean) -> Unit)
     suspend fun getAllYears() : Flow<Resources<List<Int>>>

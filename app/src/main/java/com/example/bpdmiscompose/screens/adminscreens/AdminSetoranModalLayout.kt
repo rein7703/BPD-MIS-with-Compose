@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.bpdmiscompose.BPDMISScreen
 import com.example.bpdmiscompose.R
@@ -23,13 +22,13 @@ import com.example.bpdmiscompose.components.SetoranModalTableEditable
 import com.example.bpdmiscompose.repositories.Resources
 
 @Composable
-fun AdminSetoranModalLayout (modifier: Modifier = Modifier, navController: NavHostController){
-    val staffSetoranModalViewModel: StaffSetoranModalViewModel = hiltViewModel()
+fun AdminSetoranModalLayout (staffSetoranModalViewModel : StaffSetoranModalViewModel, modifier: Modifier = Modifier, navController: NavHostController){
     val staffSetoranModalUiState = staffSetoranModalViewModel.staffSetoranModalUiState
     val context = LocalContext.current
-    val years = staffSetoranModalUiState.yearList.data?.map { it} ?: emptyList()
+    val years = staffSetoranModalUiState.yearList.data?.map {it} ?: emptyList()
     val drawerItems = listOf("Lihat Semua Data").plus(years.sortedByDescending { it }.map{it.toString()})
     var selectedItem by remember { mutableStateOf<String>(drawerItems[0]) }
+    var hasShownCircularLoading = true
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         // Batas Atas LazyColumn
 
@@ -90,7 +89,36 @@ fun AdminSetoranModalLayout (modifier: Modifier = Modifier, navController: NavHo
 
 
         // Batas Atas Tabel
-        item(){
+        item {
+            val hasRedirectedToUpdate = remember{ mutableStateOf(true) }
+            val circularState = remember { mutableStateOf(false) }
+            if(circularState.value && !hasShownCircularLoading){
+                CircularProgressIndicator()
+            }
+            when(staffSetoranModalUiState.setoranChosen){
+                is Resources.Loading ->{
+                    circularState.value = true
+                }
+                is Resources.Success ->{
+                    if(!hasRedirectedToUpdate.value){
+                        hasRedirectedToUpdate.value = true
+                        navController.navigate(BPDMISScreen.AdminSetoranUpdate.name)
+                    }
+                }
+                else ->{
+                    Log.e(
+                        ContentValues.TAG,
+                        staffSetoranModalUiState.setoranChosen.throwable?.localizedMessage.toString()
+                    );
+                    Toast.makeText(
+                        context,
+                        staffSetoranModalUiState.setoranChosen.throwable?.localizedMessage
+                            ?: "Unknown Error",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
             val setoranId = staffSetoranModalUiState.setoranList.data?.map{it.documentId} ?: listOf()
             val pemda = staffSetoranModalUiState.setoranList.data?.map{it.pemdaId} ?: listOf()
             val tahun = staffSetoranModalUiState.setoranList.data?.map{it.tahun.toString()} ?: listOf()
@@ -98,8 +126,14 @@ fun AdminSetoranModalLayout (modifier: Modifier = Modifier, navController: NavHo
             val komposisiRUPS = staffSetoranModalUiState.setoranList.data?.map{it.komposisiRUPS.toString()} ?: listOf()
             val realisasiDanaSetoranModal = staffSetoranModalUiState.setoranList.data?.map{it.realisasiDanaSetoranModal.toString()} ?: listOf()
             val totalModalDesember = staffSetoranModalUiState.setoranList.data?.map{it.totalModalDesember.toString()} ?: listOf()
-            SetoranModalTableEditable(setoranId, pemda, tahun, modalDisetorRUPS, komposisiRUPS, realisasiDanaSetoranModal, totalModalDesember, deleteData = { staffSetoranModalViewModel.deleteSetoran(context = context, setoranId = it) })
-
+            SetoranModalTableEditable(setoranId, pemda, tahun, modalDisetorRUPS, komposisiRUPS, realisasiDanaSetoranModal, totalModalDesember,
+                deleteData = { staffSetoranModalViewModel.deleteSetoran(context = context, setoranId = it) },
+                updateData = {
+                    staffSetoranModalUiState.setoranChosen = Resources.Loading()
+                    staffSetoranModalViewModel.getSingleSetoran(setoranId = it)
+                    hasRedirectedToUpdate.value = false
+                }
+            )
         }
 
         // Batas Atas tombol Add

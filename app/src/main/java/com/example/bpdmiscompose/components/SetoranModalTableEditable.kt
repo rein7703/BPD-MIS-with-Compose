@@ -1,5 +1,7 @@
 package com.example.bpdmiscompose.components
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
@@ -31,6 +33,7 @@ fun SetoranModalTableEditable(
 ) {
     val openDialogDelete = remember { mutableStateOf(false) }
     val chosenId = remember{mutableStateOf("")}
+    val chosenIndex = remember{mutableStateOf(0)}
     LazyRow(modifier = Modifier.padding(20.dp)) {
         item(){
             Column(modifier = Modifier.padding(end = 20.dp)){
@@ -40,11 +43,11 @@ fun SetoranModalTableEditable(
                 setoranId.forEach(){id ->
                     Row(){
                         // Icon for Editing Data
-                        IconButton(onClick = { 
-                            //openDialogDelete.value = true
-                            //chosenId.value = id
-                        }
-                        ) {
+                        IconButton(onClick = {
+                            chosenId.value = id
+                            updateData(chosenId.value)
+                            //Log.i(TAG, "ID yang dipilih FROM TABLE adalah: $chosenId")
+                        }){
                             Icon(
                                 imageVector = Icons.Filled.Edit,
                                 contentDescription = stringResource(R.string.EditData),
@@ -56,15 +59,15 @@ fun SetoranModalTableEditable(
                         IconButton(onClick = { 
                             openDialogDelete.value = true 
                             chosenId.value = id
+                            chosenIndex.value = setoranId.indexOf(id)
+                            Log.i(TAG, "ID yang dipilih FROM TABLE adalah: $chosenId")
+
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = stringResource(R.string.DeleteData),
                             )
                         }
-
-
-
                     }
                 }
 
@@ -167,7 +170,6 @@ fun SetoranModalTableEditable(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-
                         .padding(12.dp)
                 ) {
                     Text(text = "Realisasi Dana Setoran Modal\n(Juta Rp)", fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
@@ -177,7 +179,6 @@ fun SetoranModalTableEditable(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-
                             .padding(12.dp)
                     ) {
                         Text(text = "Rp ${it}jt", fontWeight = FontWeight.Normal, textAlign = TextAlign.Center)
@@ -212,12 +213,12 @@ fun SetoranModalTableEditable(
         AlertDialog(
             title = { Text("Apakah yakin ingin menghapus data?") },
             text = { Text("Anda akan menghapus data dengan informasi: \n" +
-                    "Pemda: ${pemda[0]} \n" +
-                    "Tahun: ${tahun[0]} \n" +
-                    "Modal Disetor RUPS: ${modalDisetorRUPS[0]} \n" +
-                    "Komposisi RUPS: ${komposisiRUPS[0]} \n" +
-                    "Realisasi Dana Setoran Modal: ${realisasiDanaSetoranModal[0]} \n" +
-                    "Total Modal Desember: ${totalModalDesember[0]} \n")},
+                    "Pemda: ${pemda[chosenIndex.value]} \n" +
+                    "Tahun: ${tahun[chosenIndex.value]} \n" +
+                    "Modal Disetor RUPS: Rp ${modalDisetorRUPS[chosenIndex.value]} juta \n" +
+                    "Komposisi RUPS: ${komposisiRUPS[chosenIndex.value]}% \n" +
+                    "Realisasi Dana Setoran Modal: Rp ${realisasiDanaSetoranModal[chosenIndex.value]} juta\n" +
+                    "Total Modal Desember: Rp ${totalModalDesember[chosenIndex.value]} juta \n")},
             onDismissRequest = {openDialogDelete.value = false},
             confirmButton = {
                 Button(onClick = {
@@ -235,3 +236,4 @@ fun SetoranModalTableEditable(
         )
     }
 }
+
