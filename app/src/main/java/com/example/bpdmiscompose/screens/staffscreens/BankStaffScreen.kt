@@ -1,42 +1,45 @@
 package com.example.bpdmiscompose
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.Savings
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.bpdmiscompose.components.*
+import com.example.bpdmiscompose.components.Drawer
+import com.example.bpdmiscompose.components.TopBarBack
+import com.example.bpdmiscompose.components.TopBarMenu
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
 import com.example.bpdmiscompose.nav.staffNavGraph
-import com.example.bpdmiscompose.ui.BankStaffUiState
 import com.example.bpdmiscompose.ui.BankStaffViewModel
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun BankStaffScreen(
+    viewModel : AuthViewModel,
     modifier: Modifier = Modifier,
     bankStaffViewModel : BankStaffViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
     navControllerOut : NavHostController,
     onClickSignOut : String = "",
     onClickChangePassword : String = "",
-
 ){
+    val loginFlow = viewModel.loginFlow.collectAsState()
     val BankStaffUiState by bankStaffViewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -47,7 +50,15 @@ fun BankStaffScreen(
     )
     val buttonItems = listOf<ButtonInfo>(
         ButtonInfo(stringResource(R.string.change_password_header), backgroundColor = Color.Transparent, textColor = MaterialTheme.colors.onPrimary,outlined = true, onButtonClick = {navControllerOut.navigate(route = onClickChangePassword) }),
-        ButtonInfo(stringResource(R.string.sign_out), backgroundColor = Color.Red, textColor = MaterialTheme.colors.onPrimary, onButtonClick = { navControllerOut.navigate(route = onClickSignOut){popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }} })
+        ButtonInfo(
+            stringResource(R.string.sign_out),
+            backgroundColor = Color.Red,
+            textColor = MaterialTheme.colors.onPrimary,
+            onButtonClick = {
+                viewModel.logout()
+                navControllerOut.navigate(route = onClickSignOut){popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }}
+            }
+        )
     )
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = BPDMISScreen.valueOf(
@@ -116,9 +127,11 @@ fun BankStaffScreen(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {innerPadding ->
+
         staffNavGraph(navController = navController, BankStaffUiState = BankStaffUiState)
     }
 }
+
 
 
 

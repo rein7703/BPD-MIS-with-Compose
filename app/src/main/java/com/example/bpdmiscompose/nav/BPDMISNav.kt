@@ -14,11 +14,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.bpdmiscompose.models.AuthViewModel
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
 import com.example.bpdmiscompose.nav.authNavGraph
 import com.example.bpdmiscompose.nav.changeNavGraph
 import com.example.bpdmiscompose.screens.AdminScreen
-import com.google.firebase.auth.FirebaseAuth
 
 
 val roboto = FontFamily(
@@ -103,6 +102,8 @@ fun BPDMISApp(
         startDestination = Graph.LandingRoute.name,
         route = Graph.HomeRoute.name,
     ){
+
+        // Go to the Landing Page and NavGraph
         landingNavGraph(viewModel = viewModel, navController = navController)
     }
 }
@@ -116,6 +117,8 @@ fun NavGraphBuilder.landingNavGraph(
         route = Graph.LandingRoute.name,
         startDestination = BPDMISScreen.Landing.name
     ){
+
+        // Go To Landing Page
         composable(route = BPDMISScreen.Landing.name){
             LandingScreen(
                 onClickNextButton = {
@@ -123,33 +126,41 @@ fun NavGraphBuilder.landingNavGraph(
                 }
             )
         }
+
+        // Go to Authorization Graph
         authNavGraph(viewModel = viewModel, navController = navController)
+
+
+        // Go to the Staff Pages Graph
         composable(route = BPDMISScreen.StaffPage.name){
             BankStaffScreen(
+                viewModel = viewModel,
                 navControllerOut = navController,
                 onClickChangePassword = Graph.ChangePasswordRoute.name,
                 onClickSignOut = Graph.LandingRoute.name,
 
             )
         }
+
+        //Go to the Pemda Pages Graph
         composable(route = BPDMISScreen.Pemda.name){
             PemdaScreen(
+                viewModel = viewModel,
                 navControllerOut = navController,
                 onClickChangePassword = Graph.ChangePasswordRoute.name,
                 onClickSignOut = Graph.LandingRoute.name,
 
             )
         }
-        changeNavGraph(
-            navController = navController,
 
-        )
+        //Go to the admin pages graph
+        changeNavGraph(navController = navController)
         composable(route = BPDMISScreen.AdminPage.name){
             AdminScreen(
+                viewModel = viewModel,
                 navControllerOut = navController,
                 onClickChangePassword = Graph.ChangePasswordRoute.name,
                 onClickSignOut = Graph.LandingRoute.name,
-
             )
         }
     }

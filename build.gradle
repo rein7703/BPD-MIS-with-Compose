@@ -14,9 +14,10 @@ buildscript {
         // The google-services plugin is required to parse the google-services.json file
         classpath 'com.google.gms:google-services:4.3.13'
         // Add the dependency for the Crashlytics Gradle plugin
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.4'
     }
 }
+
 
 plugins {
     id 'com.android.application' version '7.4.0' apply false
@@ -26,4 +27,9 @@ plugins {
 
 }
 
-
+allprojects{
+    repositories {
+        google()
+        mavenCentral()
+    }
+}

@@ -12,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -24,13 +23,12 @@ import com.example.bpdmiscompose.BPDMISScreen
 import com.example.bpdmiscompose.ButtonInfo
 import com.example.bpdmiscompose.R
 import com.example.bpdmiscompose.TextAndIcon
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
 import com.example.bpdmiscompose.components.Drawer
 import com.example.bpdmiscompose.components.TopBarBack
 import com.example.bpdmiscompose.components.TopBarMenu
 import com.example.bpdmiscompose.nav.adminNavGraph
-import com.example.bpdmiscompose.ui.BankStaffUiState
 import com.example.bpdmiscompose.ui.BankStaffViewModel
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
@@ -43,6 +41,7 @@ fun NavOptionsBuilder.popUpToTop(navController: NavController) {
 
 @Composable
 fun AdminScreen(
+    viewModel : AuthViewModel,
     modifier: Modifier = Modifier,
     bankStaffViewModel : BankStaffViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
@@ -79,12 +78,8 @@ fun AdminScreen(
             backgroundColor = Color.Red,
             textColor = MaterialTheme.colors.onPrimary,
             onButtonClick = {
-                navControllerOut.navigate(
-                    route = onClickSignOut,
-                ){
-                    launchSingleTop = true
-                    popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }
-                }
+                viewModel.logout()
+                navControllerOut.navigate(route = onClickSignOut){popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }}
             }
         )
     )

@@ -1,5 +1,6 @@
 package com.example.bpdmiscompose
 
+import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -28,6 +29,7 @@ fun LandingScreen(modifier : Modifier = Modifier, onClickNextButton: () -> Unit 
         Font(R.font.montserrat_bold, FontWeight.Bold),
         Font(R.font.montserrat_black, FontWeight.Black)
     ) */
+
     Column(
         modifier = Modifier
             .background(Color(0xFF353890))
@@ -37,6 +39,7 @@ fun LandingScreen(modifier : Modifier = Modifier, onClickNextButton: () -> Unit 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom,
     ){
+
         Image(painter = painterResource(R.drawable.logo_bpd), contentDescription = "logo")
         Spacer(modifier = Modifier.height(150.dp))
         Text(stringResource(R.string.welcome), color = Color.White, textAlign = TextAlign.Center, fontSize = 20.sp, fontFamily = roboto, fontWeight = FontWeight.Medium)

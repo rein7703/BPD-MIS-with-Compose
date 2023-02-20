@@ -29,7 +29,8 @@ fun Dropdown(
     label : String ="",
     default : String = "",
     modifier : Modifier = Modifier,
-    color: Color = Color.Transparent
+    color: Color = Color.Transparent,
+    onItemSelected : (String) -> Unit = {}
 ){
     var selectedItem by remember { mutableStateOf(default) }
     var expandedState by remember { mutableStateOf(false) }
@@ -38,7 +39,6 @@ fun Dropdown(
         Icons.Filled.KeyboardArrowUp
     else
         Icons.Filled.KeyboardArrowDown
-
     Column(
 
     ){
@@ -76,6 +76,7 @@ fun Dropdown(
                         onClick = {
                             expandedState = false
                             selectedItem = item
+                            onItemSelected(item)
                         }
                     ) {
                         Text(text = item, color = MaterialTheme.colors.onSurface)

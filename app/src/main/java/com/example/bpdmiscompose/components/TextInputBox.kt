@@ -21,14 +21,14 @@ import com.example.bpdmiscompose.roboto
 @Composable
 fun TextInputBox(
     @StringRes label: Int,
+    value : String = "",
     onValueChange: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
     focusManager: FocusManager,
 ) {
-    var usernameInput by remember { mutableStateOf("") }
     OutlinedTextField(
-        value = usernameInput,
+        value = value,
         onValueChange = onValueChange,
         label = { Text(stringResource(label), fontFamily = roboto, fontWeight = FontWeight.Normal, color = Color(0xFF757575)) },
         colors = TextFieldDefaults.textFieldColors(

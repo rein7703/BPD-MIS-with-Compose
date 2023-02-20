@@ -46,7 +46,6 @@ fun adminNavGraph(
 
         adminNavGraphBuild(navController = navController)
         changeNavGraph(navController = navController)
-        //landingNavGraph(navController = navController, auth = auth)
     }
 }
 

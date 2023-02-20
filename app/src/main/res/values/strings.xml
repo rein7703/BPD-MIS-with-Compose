@@ -155,4 +155,6 @@
     <string name="admin_route">admin_route</string>
     <string name="staff">staff</string>
     <string name="landing_route">landing_route</string>
+    <string name="EditData">Edit Data</string>
+    <string name="DeleteData">Delete Data</string>
 </resources>

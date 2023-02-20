@@ -23,12 +23,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bpdmiscompose.components.Drawer
 import com.example.bpdmiscompose.components.TopBarBack
 import com.example.bpdmiscompose.components.TopBarMenu
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
 import com.example.bpdmiscompose.nav.pemdaNavGraph
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun PemdaScreen(
+    viewModel : AuthViewModel,
     modifier : Modifier = Modifier,
     onClickChangePassword : String,
     onClickSignOut : String,
@@ -53,6 +55,7 @@ fun PemdaScreen(
             backgroundColor = Color.Red,
             textColor = MaterialTheme.colors.onPrimary,
             onButtonClick = {
+                viewModel.logout()
                 navControllerOut.navigate(
                     route = onClickSignOut){
                     popUpTo(navControllerOut.graph.findStartDestination().id){inclusive = true }
