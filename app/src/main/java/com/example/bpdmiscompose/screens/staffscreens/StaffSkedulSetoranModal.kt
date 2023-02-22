@@ -31,7 +31,7 @@ fun StaffSkedulSetoranModalLayout (modifier: Modifier=Modifier, navController: N
     val skedulSetoranUiState = skedulSetoranViewModel.skedulSetoranUiState
     val years = skedulSetoranUiState.yearsList.data?.map {it} ?: emptyList()
     val dropdownItems = years.sortedByDescending { it }.map{it.toString()}
-    var selectedItem = remember { mutableStateOf("") }
+    var selectedYear = remember { mutableStateOf("") }
     val pageSelected = remember { mutableStateOf(0) } // 0 = Tahun, 1 = Pemda, 2 = all data
     val hasRedirected = remember{ mutableStateOf(true) }
     val circularState = remember{ mutableStateOf(false) }
@@ -90,8 +90,8 @@ fun StaffSkedulSetoranModalLayout (modifier: Modifier=Modifier, navController: N
                     .wrapContentSize(Alignment.TopStart)
                     .padding(20.dp),
                 onItemSelected = {
-                    selectedItem.value = it
-                    Log.i(ContentValues.TAG, "the selected item is ${selectedItem.toString()}")
+                    selectedYear.value = it
+                    Log.i(ContentValues.TAG, "the selected item is ${selectedYear.toString()}")
                 }
             )
         }
@@ -119,10 +119,11 @@ fun StaffSkedulSetoranModalLayout (modifier: Modifier=Modifier, navController: N
                 ) {
                     Button(onClick = {
                         try{
-                            Log.i(ContentValues.TAG, "the selected item is ${selectedItem.toString()}")
+                            require(selectedYear.value != ""){"Mohon pilih tahun yang valid sebelum melihat data"}
+                            Log.i(ContentValues.TAG, "the selected item is ${selectedYear.toString()}")
                             hasRedirected.value = false
                             pageSelected.value = 0
-                            skedulSetoranViewModel.getSkeduSetoranByTahun(selectedItem.value.toInt())
+                            skedulSetoranViewModel.getSkeduSetoranByTahun(selectedYear.value.toInt())
 
 
                         } catch(e: Exception){
@@ -191,7 +192,7 @@ fun StaffSkedulSetoranModalLayout (modifier: Modifier=Modifier, navController: N
                     .padding(20.dp),
                 onItemSelected = {
                     pemegangSahamSelectedItem.value = it
-                    Log.i(ContentValues.TAG, "the selected item is ${selectedItem.toString()}")
+                    Log.i(ContentValues.TAG, "the selected item is ${pemegangSahamSelectedItem.toString()}")
                 }
             )
             Row(

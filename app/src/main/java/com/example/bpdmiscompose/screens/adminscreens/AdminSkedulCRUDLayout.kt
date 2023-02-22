@@ -31,7 +31,9 @@ fun AdminSkedulCRUDLayout(modifier:Modifier = Modifier, navController : NavHostC
 
     LazyColumn(modifier = Modifier.padding(20.dp)){
         //title
-        item{Text(text = "Admin Skedul CRUD Layout", fontWeight = FontWeight.Bold, fontSize = 30.sp)}
+        item{Text(text = "Skedul Setoran CRUD Layout", fontWeight = FontWeight.Bold, fontSize = 30.sp)}
+
+        item{Text(text = "Untuk menambah data: tekan tombol 'add'\nUntuk mengubah/ menghapus data: klik data yang ingin diubah/dihapus\nUntuk menambah data yang empty: klik data yang ingin ditambahkan", fontWeight = FontWeight.Medium, fontSize = 8.sp)}
 
         //Table
         item{
