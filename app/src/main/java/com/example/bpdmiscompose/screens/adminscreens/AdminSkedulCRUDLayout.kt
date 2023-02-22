@@ -1,5 +1,6 @@
 package com.example.bpdmiscompose.screens.adminscreens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +27,7 @@ fun AdminSkedulCRUDLayout(modifier:Modifier = Modifier, navController : NavHostC
 ){
     val context = LocalContext.current
     val skedulSetoranUiState = skedulSetoranViewModel.skedulSetoranUiState
-    var a:String
-    var b:String
+
 
     LazyColumn(modifier = Modifier.padding(20.dp)){
         //title
@@ -37,6 +37,12 @@ fun AdminSkedulCRUDLayout(modifier:Modifier = Modifier, navController : NavHostC
         item{
             SkedulSetoranTableEditable(
                 skedulSetoranList = skedulSetoranUiState.setoranList.data ?: listOf(),
+                onDelete = {skedulSetoranViewModel.deleteSkedulSetoran(it, onComplete = {Toast.makeText(context, "Successfully Delete", Toast.LENGTH_SHORT).show()})},
+                onSetAddedPemegangSaham = {skedulSetoranViewModel.setPemegangSahamChosen(it)},
+                onSetAddedTahun = {skedulSetoranViewModel.setYearChosen(it)},
+                onSetSkedulId = {skedulSetoranViewModel.setSkedulIdChosen(it)},
+                onNavigateToAddPage = {navController.navigate(BPDMISScreen.AdminSkedulAdd.name)},
+                onUpdate = {navController.navigate(BPDMISScreen.AdminSkedulUpdate.name)}
             )
         }
 

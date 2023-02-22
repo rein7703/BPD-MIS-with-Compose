@@ -76,11 +76,29 @@ class SkedulSetoranViewModel @Inject constructor (
         }
     }
 
-    fun updateSkedulSetoran(pemegangSaham: String, tahun: Int, nominal : Long, skedulId : String, onResult : (Boolean) -> Unit = {}) = viewModelScope.launch {
-        repository.updateSkedulSetoran(pemegangSaham, tahun, nominal, skedulId, onResult)
+    fun updateSkedulSetoran(context: Context, pemegangSaham: String, tahun: Int, nominal : Long, skedulId : String, onResult : (Boolean) -> Unit = {}) = viewModelScope.launch {
+        try{
+            repository.updateSkedulSetoran(pemegangSaham, tahun, nominal, skedulId, onResult)
+            Toast.makeText(context, "Data berhasil diubah",Toast.LENGTH_SHORT).show()
+        } catch (e: Exception){
+            onResult(false)
+            Toast.makeText(context, e.message,Toast.LENGTH_SHORT).show()
+        }
     }
     fun deleteSkedulSetoran(skedulId: String, onComplete: (Boolean) -> Unit) = viewModelScope.launch {
         repository.deleteSkedulSetoran(skedulId, onComplete)
+    }
+
+    fun setYearChosen(yearString : String){
+        skedulSetoranUiState = skedulSetoranUiState.copy(yearChosen = yearString)
+    }
+
+    fun setPemegangSahamChosen(pemegangSahamChosen: String){
+        skedulSetoranUiState = skedulSetoranUiState.copy(pemegangSahamChosen = pemegangSahamChosen)
+    }
+
+    fun setSkedulIdChosen(skedulIdChosen : String){
+        skedulSetoranUiState = skedulSetoranUiState.copy(skedulIdChosen = skedulIdChosen)
     }
 
 }
@@ -89,6 +107,9 @@ data class SkedulSetoranUiState(
     val setoranChosen : Resources<SkedulSetoranModal> = Resources.Loading(),
     val setoranList : Resources<List<SkedulSetoranModal>> = Resources.Loading(),
     val yearsList : Resources<List<Int>> = Resources.Loading(),
-    val yearChosen : Resources<Int> = Resources.Loading(),
+    val yearChosen : String = "",
+    val pemegangSahamChosen : String = "",
+    val nominalChosen : String = "",
+    val skedulIdChosen : String = "",
     val pemegangSahamList : Resources<List<String>> = Resources.Loading(),
 )

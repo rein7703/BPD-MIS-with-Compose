@@ -35,9 +35,12 @@ val exampleSkedulSetoranList =listOf(
 @Composable
 fun SkedulSetoranTableEditable(
     skedulSetoranList: List<SkedulSetoranModal> = exampleSkedulSetoranList,
-    onDelete : (id : String) -> Unit = {},
-    onUpdate : (id : String) -> Unit = {},
-    onAdd : () -> Unit = {}
+    onDelete: (id: String) -> Unit = {},
+    onUpdate: (id: String) -> Unit = {},
+    onSetAddedPemegangSaham: (pemegangSaham: String) -> Unit = {},
+    onSetAddedTahun: (tahun: String) -> Unit = {},
+    onSetSkedulId : (id:String) -> Unit = {},
+    onNavigateToAddPage: () -> Unit
 ) {
     Log.i(TAG, "START!!!")
     val tahunUnsorted= skedulSetoranList.map{it.tahun.toString()}.distinct() ?: emptyList()
@@ -182,7 +185,11 @@ fun SkedulSetoranTableEditable(
                     Column(modifier = Modifier.weight(.4f),horizontalAlignment = Alignment.End){
                         Button(modifier = Modifier.padding(5.dp), onClick = {
                             openDialogDeleteOrUpdate.value = false
-                            onUpdate(skedulIdChosen.value)}
+                            onSetAddedTahun(tahunChosen.value)
+                            onSetAddedPemegangSaham(pemegangSahamChosen.value)
+                            onSetSkedulId(skedulIdChosen.value)
+                            onUpdate(skedulIdChosen.value)
+                        }
                         ){Text(text = "Update")}
                         Button(modifier = Modifier.padding(5.dp), onClick = {
                             openDialogDeleteOrUpdate.value = false
@@ -236,18 +243,18 @@ fun SkedulSetoranTableEditable(
                     Column(modifier = Modifier.weight(.6f)){}
                     Column(modifier = Modifier.weight(.4f),horizontalAlignment = Alignment.End){
                         Button(modifier = Modifier.padding(5.dp), onClick = {
+                            onSetAddedTahun(tahunChosen.value)
+                            onSetAddedPemegangSaham(pemegangSahamChosen.value)
+                            onNavigateToAddPage()
                             openDialogAdd.value = false
                             },
-                            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)){Text(text = "Tambahkan Data", color = Color.White)}
+                            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)){Text(text = "Tambahkan Data", color = Color.White)}
                         Button(modifier = Modifier.padding(5.dp), onClick= { openDialogAdd.value = false }){Text(text = "Batalkan")}
                     }
                 }
             }
         )
     }
-
-
-
 }
 
 

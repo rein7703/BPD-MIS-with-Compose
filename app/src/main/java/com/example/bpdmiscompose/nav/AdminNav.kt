@@ -107,6 +107,9 @@ fun NavGraphBuilder.adminNavGraphBuild(
             AdminSkedulAddLayout(skedulSetoranViewModel = skedulSetoranViewModel)
         }
 
+        composable(route = BPDMISScreen.AdminSkedulUpdate.name){
+            AdminSkedulUpdateLayout(skedulSetoranViewModel = skedulSetoranViewModel)
+        }
         composable(route = BPDMISScreen.AdminSkedulBerdasarkanTahun.name){
             AdminSkedulBerdasarkanTahunLayout(skedulSetoranViewModel = skedulSetoranViewModel)
         }
