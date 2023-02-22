@@ -95,8 +95,6 @@ fun AdminScreen(
         BPDMISScreen.AdminManajemenPengguna
     )
     val pagesWithNoBar = listOf<BPDMISScreen>(
-        BPDMISScreen.Landing,
-        BPDMISScreen.Login,
         BPDMISScreen.ChangePasswordSuccess
     )
     val topBarMenuState = rememberSaveable {(mutableStateOf(true))}

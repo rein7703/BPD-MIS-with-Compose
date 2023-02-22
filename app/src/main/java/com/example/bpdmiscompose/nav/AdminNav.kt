@@ -14,21 +14,21 @@ import com.example.bpdmiscompose.AdminBranchRoute
 import com.example.bpdmiscompose.AdminRoute
 import com.example.bpdmiscompose.BPDMISScreen
 import com.example.bpdmiscompose.R
+import com.example.bpdmiscompose.ViewModels.SkedulSetoranViewModel
 import com.example.bpdmiscompose.ViewModels.StaffSetoranModalViewModel
 import com.example.bpdmiscompose.screens.AdminIndikatorKeuanganUtamaLayout
 import com.example.bpdmiscompose.screens.AdminManajemenPenggunaLayout
 import com.example.bpdmiscompose.screens.AdminSetoranModalLayout
 import com.example.bpdmiscompose.screens.AdminSkedulSetoranModalLayout
 import com.example.bpdmiscompose.screens.adminscreens.*
-import com.example.bpdmiscompose.screens.staffscreens.StaffSetoranBerdasarkanPemda
-import com.example.bpdmiscompose.screens.staffscreens.StaffSetoranBerdasarkanTahun
 
 
 @Composable
 fun adminNavGraph(
     navController: NavHostController,
     modifier : Modifier = Modifier,
-    staffSetoranModalViewModel: StaffSetoranModalViewModel = hiltViewModel()
+    staffSetoranModalViewModel: StaffSetoranModalViewModel = hiltViewModel(),
+    skedulSetoranViewModel: SkedulSetoranViewModel = hiltViewModel(),
 ){
     NavHost(
         navController= navController,
@@ -46,7 +46,7 @@ fun adminNavGraph(
             )
         }
 
-        adminNavGraphBuild(navController = navController, staffSetoranModalViewModel = staffSetoranModalViewModel)
+        adminNavGraphBuild(navController = navController, staffSetoranModalViewModel = staffSetoranModalViewModel, skedulSetoranViewModel = skedulSetoranViewModel)
         changeNavGraph(navController = navController)
     }
 }
@@ -55,6 +55,7 @@ fun adminNavGraph(
 fun NavGraphBuilder.adminNavGraphBuild(
     navController: NavHostController,
     staffSetoranModalViewModel: StaffSetoranModalViewModel,
+    skedulSetoranViewModel: SkedulSetoranViewModel
 ){
     navigation(
         startDestination = BPDMISScreen.AdminProfile.name,
@@ -83,7 +84,7 @@ fun NavGraphBuilder.adminNavGraphBuild(
 
 
         composable(route = BPDMISScreen.AdminSkedulSetoran.name){
-            AdminSkedulSetoranModalLayout(navController = navController)
+            AdminSkedulSetoranModalLayout(navController = navController, skedulSetoranViewModel = skedulSetoranViewModel)
         }
 
         composable(route = BPDMISScreen.AdminIndikatorKeuangan.name){
@@ -99,18 +100,21 @@ fun NavGraphBuilder.adminNavGraphBuild(
         }
 
         composable(route = BPDMISScreen.AdminSkedulCRUD.name){
-            AdminSkedulCRUDLayout(navController = navController)
+            AdminSkedulCRUDLayout(navController = navController, skedulSetoranViewModel = skedulSetoranViewModel)
         }
 
         composable(route = BPDMISScreen.AdminSkedulAdd.name){
-            AdminSkedulAddLayout()
+            AdminSkedulAddLayout(skedulSetoranViewModel = skedulSetoranViewModel)
         }
 
-        composable(route = BPDMISScreen.StaffSetoranBerdasarkanPemda.name){
-            StaffSetoranBerdasarkanPemda()
+        composable(route = BPDMISScreen.AdminSkedulBerdasarkanTahun.name){
+            AdminSkedulBerdasarkanTahunLayout(skedulSetoranViewModel = skedulSetoranViewModel)
         }
-        composable(route = BPDMISScreen.StaffSetoranBerdasarkanTahun.name){
-            StaffSetoranBerdasarkanTahun()
+
+        composable(route = BPDMISScreen.AdminSkedulBerdasarkanPemda.name){
+            AdminSkedulBerdasarkanPemdaLayout(skedulSetoranViewModel = skedulSetoranViewModel)
         }
+
+
     }
 }

@@ -64,9 +64,9 @@ enum class BPDMISScreen(@StringRes val title:Int){
     ChangePassword(title = R.string.change_password_header),
     ChangePasswordSuccess(title = R.string.selamat),
     StaffIndikatorSearchResult(title = R.string.hasil_penelusuran_kinerja),
-    StaffSemuaSetoran(title = R.string.semua_data_setoran),
-    StaffSetoranBerdasarkanTahun(title = R.string.setoran_berdasarkan_tahun),
-    StaffSetoranBerdasarkanPemda(title = R.string.setoran_berdasarkan_pemda),
+    StaffSemuaSkedul(title = R.string.semua_data_setoran),
+    StaffSkedulBerdasarkanTahun(title = R.string.setoran_berdasarkan_tahun),
+    StaffSkedulBerdasarkanPemda(title = R.string.setoran_berdasarkan_pemda),
     AdminPage(title = R.string.admin_page),
     AdminProfile(title = R.string.admin_profile),
     AdminSetoranModal(title = R.string.admin_setoran_modal),
@@ -80,6 +80,8 @@ enum class BPDMISScreen(@StringRes val title:Int){
     AdminSetoranUpdate(title = R.string.admin_setoran_update),
     AdminSkedulAdd(title = R.string.admin_skedul_add),
     AdminSkedulCRUD(title = R.string.admin_skedul_crud),
+    AdminSkedulBerdasarkanTahun(title = R.string.admin_skedul_berdasarkan_tahun),
+    AdminSkedulBerdasarkanPemda(title = R.string.admin_skedul_berdasarkan_pemda),
     AdminManajemenPenggunaAdd(title = R.string.admin_manajemen_pengguna_add),
 
 }

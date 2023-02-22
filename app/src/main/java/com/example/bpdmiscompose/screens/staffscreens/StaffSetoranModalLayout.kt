@@ -36,6 +36,7 @@ fun StaffSetoranModalLayout (
         listOf("Lihat Semua Data").plus(staffSetoranModalUiState.yearList.data?.map { it.toString() }
             ?: listOf("Lihat Semua Data"))
     var selectedItem by remember { mutableStateOf<String>(drawerItems[0]) }
+
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Dropdown(
@@ -53,46 +54,15 @@ fun StaffSetoranModalLayout (
             )
         }
 
-
         item {
             when (staffSetoranModalUiState.setoranList) {
                 is Resources.Loading -> CircularProgressIndicator()
                 is Resources.Success -> {
                     if (selectedItem == drawerItems[0]) {
-                        LaunchedEffect(key1 = Unit){
-                            staffSetoranModalViewModel.loadAll()
-                        }
+                        staffSetoranModalViewModel.loadAll()
                     } else {
-                        LaunchedEffect(Unit){
-                            staffSetoranModalViewModel.loadByYear(selectedItem!!.toInt())
-                        }
+                        staffSetoranModalViewModel.loadByYear(selectedItem!!.toInt())
                     }
-                    val pemda =
-                        staffSetoranModalUiState.setoranList.data?.map { it.pemdaId.toString() }
-                            ?: listOf()
-                    val tahun =
-                        staffSetoranModalUiState.setoranList.data?.map { it.tahun.toString() }
-                            ?: listOf()
-                    val modalDisetorRUPS =
-                        staffSetoranModalUiState.setoranList.data?.map { it.modalDisetorRUPS.toString() }
-                            ?: listOf()
-                    val komposisiRUPS =
-                        staffSetoranModalUiState.setoranList.data?.map { it.komposisiRUPS.toString() }
-                            ?: listOf()
-                    val realisasiDanaSetoranModal =
-                        staffSetoranModalUiState.setoranList.data?.map { it.realisasiDanaSetoranModal.toString() }
-                            ?: listOf()
-                    val totalModalDesember =
-                        staffSetoranModalUiState.setoranList.data?.map { it.totalModalDesember.toString() }
-                            ?: listOf()
-                    SetoranModalTableREADONLY(
-                        pemda,
-                        tahun,
-                        modalDisetorRUPS,
-                        komposisiRUPS,
-                        realisasiDanaSetoranModal,
-                        totalModalDesember
-                    )
                 }
                 else -> {
                     Log.e(
@@ -108,6 +78,36 @@ fun StaffSetoranModalLayout (
                 }
             }
         }
+
+        item {
+            val pemda =
+                staffSetoranModalUiState.setoranList.data?.map { it.pemdaId.toString() }
+                    ?: listOf()
+            val tahun =
+                staffSetoranModalUiState.setoranList.data?.map { it.tahun.toString() }
+                    ?: listOf()
+            val modalDisetorRUPS =
+                staffSetoranModalUiState.setoranList.data?.map { it.modalDisetorRUPS.toString() }
+                    ?: listOf()
+            val komposisiRUPS =
+                staffSetoranModalUiState.setoranList.data?.map { it.komposisiRUPS.toString() }
+                    ?: listOf()
+            val realisasiDanaSetoranModal =
+                staffSetoranModalUiState.setoranList.data?.map { it.realisasiDanaSetoranModal.toString() }
+                    ?: listOf()
+            val totalModalDesember =
+                staffSetoranModalUiState.setoranList.data?.map { it.totalModalDesember.toString() }
+                    ?: listOf()
+            SetoranModalTableREADONLY(
+                pemda,
+                tahun,
+                modalDisetorRUPS,
+                komposisiRUPS,
+                realisasiDanaSetoranModal,
+                totalModalDesember
+            )
+        }
+
     }
 }
 

@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bpdmiscompose.dataClass.SetoranModal
 import com.example.bpdmiscompose.repositories.Resources
-import com.example.bpdmiscompose.repositories.SetoranModal
 import com.example.bpdmiscompose.repositories.SetoranModalRepository
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.GetTokenResult

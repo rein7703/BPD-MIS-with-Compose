@@ -2,6 +2,7 @@ package com.example.bpdmiscompose.repositories
 
 import android.content.ContentValues
 import android.util.Log
+import com.example.bpdmiscompose.dataClass.SetoranModal
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -208,6 +209,33 @@ class SetoranModalRepositoryImpl @Inject constructor(
             emit(Resources.Error(e))
         }
     }
+
+    override suspend fun getSingleSetoranByYearAndPemda(pemdaId: String, tahun: Int): Flow<Resources<SetoranModal>> = flow {
+        try {
+            val result = setoranModalRef.whereEqualTo("pemdaId", pemdaId).whereEqualTo("tahun", tahun).get().await()
+            val resultAsClass = result.documents[0].toObject(SetoranModal::class.java)
+            emit(Resources.Success(resultAsClass))
+        } catch (e: Exception) {
+            emit(Resources.Error(e))
+        }
+    }
+
+    override suspend fun getAllYearsByPemda(pemdaId : String) : Flow<Resources<List<Int>>> = flow{
+        try {
+            val result = setoranModalRef.whereEqualTo("pemdaId", pemdaId).get().await()
+            val years = mutableListOf<Int>()
+            for (document in result.documents) {
+                val tahun = document.getLong("tahun")?.toInt() ?: continue
+                if (!years.contains(tahun)) {
+                    years.add(tahun)
+                }
+            }
+            emit(Resources.Success(years))
+        } catch (e: Exception) {
+            emit(Resources.Error(e))
+        }
+    }
+
 
 
 

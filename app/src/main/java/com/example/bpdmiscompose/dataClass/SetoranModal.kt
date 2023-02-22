@@ -1,4 +1,4 @@
-package com.example.bpdmiscompose.repositories
+package com.example.bpdmiscompose.dataClass
 
 import com.google.firebase.Timestamp
 

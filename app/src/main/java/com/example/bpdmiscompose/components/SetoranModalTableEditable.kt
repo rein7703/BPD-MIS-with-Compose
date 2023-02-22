@@ -200,7 +200,6 @@ fun SetoranModalTableEditable(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-
                             .padding(12.dp)
                     ) {
                         Text(text = "Rp ${it}jt", fontWeight = FontWeight.Normal, textAlign = TextAlign.Center)

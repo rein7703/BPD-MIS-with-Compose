@@ -159,4 +159,6 @@
     <string name="EditData">Edit Data</string>
     <string name="DeleteData">Delete Data</string>
     <string name="data_berhasil_diubah">Data Berhasil Diubah</string>
+    <string name="admin_skedul_berdasarkan_tahun">Admin Skedul Berdasarkan Tahun</string>
+    <string name="admin_skedul_berdasarkan_pemda">Admin Skedul Berdasarkan Pemda</string>
 </resources>
