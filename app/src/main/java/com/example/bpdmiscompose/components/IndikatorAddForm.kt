@@ -95,32 +95,10 @@ fun IndikatorAddForm(
         }
 
 
-        // Nominal Desember Sebelumnya
-        item{
-            Text(text = stringResource(id = R.string.nominal_desember_tahun_sebelumnya), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
-            TextInputBox(label = R.string.nominal_dalam_rupiah, onValueChange = {}, modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-                focusManager = focusManager,
-                keyboardType = KeyboardType.Number
-            )
-        }
-
-        // Nominal RBB P
-        item{
-            Text(text = stringResource(id = R.string.nominal_rbb_p), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
-            TextInputBox(label = R.string.nominal_dalam_rupiah, onValueChange = {}, modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-                focusManager = focusManager,
-                keyboardType = KeyboardType.Number
-            )
-        }
-
         // Nominal Desember Tahun Dipilih
         item{
-            Text(text = stringResource(id = R.string.nominal_desember_tahun_dipilih), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
-            TextInputBox(label = R.string.nominal_dalam_rupiah, onValueChange = {}, modifier = Modifier
+            Text(text = stringResource(id = R.string.nominal), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
+            TextInputBox(label = R.string.dalam_juta_rupiah, onValueChange = {}, modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp),
                 focusManager = focusManager,
@@ -128,27 +106,8 @@ fun IndikatorAddForm(
             )
         }
 
-        //Capaian
-        item{
-            Text(text = stringResource(id = R.string.pencapaian), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
-            TextInputBox(label = R.string.dalam_persen, onValueChange = {}, modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-                focusManager = focusManager,
-                keyboardType = KeyboardType.Number
-            )
-        }
 
-        //Pertumbuhan
-        item{
-            Text(text = stringResource(id = R.string.pertumbuhan), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
-            TextInputBox(label = R.string.dalam_persen, onValueChange = {}, modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-                focusManager = focusManager,
-                keyboardType = KeyboardType.Number
-            )
-        }
+
 
         //Button
         item {

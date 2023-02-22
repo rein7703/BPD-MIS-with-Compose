@@ -14,6 +14,8 @@ import com.example.bpdmiscompose.AdminBranchRoute
 import com.example.bpdmiscompose.AdminRoute
 import com.example.bpdmiscompose.BPDMISScreen
 import com.example.bpdmiscompose.R
+import com.example.bpdmiscompose.ViewModels.IndikatorKeuanganViewModel
+import com.example.bpdmiscompose.ViewModels.RBBViewModel
 import com.example.bpdmiscompose.ViewModels.SkedulSetoranViewModel
 import com.example.bpdmiscompose.ViewModels.StaffSetoranModalViewModel
 import com.example.bpdmiscompose.screens.AdminIndikatorKeuanganUtamaLayout
@@ -29,6 +31,8 @@ fun adminNavGraph(
     modifier : Modifier = Modifier,
     staffSetoranModalViewModel: StaffSetoranModalViewModel = hiltViewModel(),
     skedulSetoranViewModel: SkedulSetoranViewModel = hiltViewModel(),
+    indikatorKeuanganViewModel: IndikatorKeuanganViewModel = hiltViewModel(),
+    rbbViewModel: RBBViewModel = hiltViewModel()
 ){
     NavHost(
         navController= navController,
@@ -46,7 +50,7 @@ fun adminNavGraph(
             )
         }
 
-        adminNavGraphBuild(navController = navController, staffSetoranModalViewModel = staffSetoranModalViewModel, skedulSetoranViewModel = skedulSetoranViewModel)
+        adminNavGraphBuild(navController = navController, staffSetoranModalViewModel = staffSetoranModalViewModel, skedulSetoranViewModel = skedulSetoranViewModel, indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
         changeNavGraph(navController = navController)
     }
 }
@@ -55,7 +59,9 @@ fun adminNavGraph(
 fun NavGraphBuilder.adminNavGraphBuild(
     navController: NavHostController,
     staffSetoranModalViewModel: StaffSetoranModalViewModel,
-    skedulSetoranViewModel: SkedulSetoranViewModel
+    skedulSetoranViewModel: SkedulSetoranViewModel,
+    indikatorKeuanganViewModel: IndikatorKeuanganViewModel,
+    rbbViewModel: RBBViewModel
 ){
     navigation(
         startDestination = BPDMISScreen.AdminProfile.name,
@@ -88,15 +94,19 @@ fun NavGraphBuilder.adminNavGraphBuild(
         }
 
         composable(route = BPDMISScreen.AdminIndikatorKeuangan.name){
-            AdminIndikatorKeuanganUtamaLayout(navController = navController)
+            AdminIndikatorKeuanganUtamaLayout(navController = navController, indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
         }
 
         composable(route = BPDMISScreen.AdminIndikatorAdd.name){
-            AdminIndikatorAddLayout()
+            AdminIndikatorAddLayout(indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
         }
         
         composable(route = BPDMISScreen.AdminIndikatorSearchResult.name){
-            AdminIndikatorSearchResultLayout(navController = navController)
+            AdminIndikatorSearchResultLayout(navController = navController, indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
+        }
+
+        composable(route = BPDMISScreen.AdminIndikatorAllData.name){
+            AdminIndikaotrAllData(indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
         }
 
         composable(route = BPDMISScreen.AdminSkedulCRUD.name){

@@ -23,4 +23,10 @@ class AppModule {
     @Provides
     fun provideSkedulSetoranRepository(impl : SkedulSetoranRepositoryImpl) : SkedulSetoranRepository = impl
 
+    @Provides
+    fun provideRBBRepository(impl : RBBRepositoryImpl) : RBBRepository = impl
+
+    @Provides
+    fun IndikatorKeuanganRepository(impl : IndikatorKeuanganRepositoryImpl) : IndikatorKeuanganRepository = impl
+
 }

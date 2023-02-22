@@ -26,6 +26,7 @@
     <string name="setoran_modal">Setoran Modal</string>
     <string name="indikator_keuangan_utama">Indikator Keuangan Utama</string>
     <string name="indikator_keuangan_utama_search_result">Hasil untuk Indikator Keuangan Utama</string>
+    <string name="admin_indikator_all_data">Semua Data Indikator Keuangan Utama</string>
     <string name="skedul_setoran_modal">Skedul Setoran Modal</string>
     <string name="setoran_berdasarkan_tahun">Setoran Berdasarkan Tahun</string>
     <string name="semua_data_setoran">Semua Data Setoran</string>
@@ -130,6 +131,7 @@
     <string name="data_berhasil_ditambahkan">Data Berhasil Ditambahkan</string>
     <string name="modal_disetor_rups">Modal Disetor RUPS</string>
     <string name="dalam_juta_rupiah">Dalam Juta Rupiah</string>
+    <string name="dalam_miliar_rupiah">Dalam Miliar Rupiah</string>
     <string name="dalam_persen">Dalam Persen</string>
     <string name="komposisi_rups">Komposisi RUPS</string>
     <string name="realisasi_dana_setoran_modal">Realisasi Dana Setoran Modal</string>

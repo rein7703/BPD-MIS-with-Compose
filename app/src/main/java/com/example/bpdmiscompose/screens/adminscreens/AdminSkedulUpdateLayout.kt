@@ -79,17 +79,17 @@ fun AdminSkedulUpdateLayout(modifier: Modifier = Modifier, skedulSetoranViewMode
         item{
             Text(text = stringResource(id = R.string.nominal), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
             Row (modifier = Modifier.fillMaxWidth().padding(20.dp)){
-                Text(text = "Rp", textAlign = TextAlign.Start, modifier = Modifier.weight(.15f).align(
+                Text(text = "Rp", textAlign = TextAlign.Start, modifier = Modifier.weight(.1f).align(
                     Alignment.CenterVertically).padding(end = 5.dp))
                 TextInputBox(
                     value = nominalChosen.value,
-                    label = R.string.dalam_juta_rupiah,
+                    label = R.string.dalam_miliar_rupiah,
                     onValueChange = {nominalChosen.value = it},
-                    modifier = Modifier.weight(.7f),
+                    modifier = Modifier.weight(.6f),
                     focusManager = focusManager,
                     keyboardType = KeyboardType.Number,
                 )
-                Text(text = "Juta", textAlign = TextAlign.Start, modifier= Modifier.weight(.15f).align(
+                Text(text = "Miliar", textAlign = TextAlign.Start, modifier= Modifier.weight(.3f).align(
                     Alignment.CenterVertically).padding(start = 5.dp))
             }
 
@@ -125,8 +125,6 @@ fun AdminSkedulUpdateLayout(modifier: Modifier = Modifier, skedulSetoranViewMode
                     }
                 }
             }
-
-
         }
     }
 }

@@ -75,6 +75,7 @@ enum class BPDMISScreen(@StringRes val title:Int){
     AdminIndikatorKeuangan(title = R.string.admin_indikator_keuangan),
     AdminIndikatorAdd(title = R.string.admin_indikator_add ),
     AdminIndikatorSearchResult(title = R.string.admin_indikator_search_result),
+    AdminIndikatorAllData(title = R.string.admin_indikator_all_data),
     AdminPenggunaAdd(title = R.string.admin_pengguna_add),
     AdminSetoranAdd(title = R.string.admin_setoran_add),
     AdminSetoranUpdate(title = R.string.admin_setoran_update),

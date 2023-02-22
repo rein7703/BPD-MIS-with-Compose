@@ -118,7 +118,7 @@ fun SkedulSetoranTableEditable(
                             sked.ListTahunNominal.forEach{it ->
                                 if(it[0] == tahun){
                                     Text(
-                                        text = "Rp ${it[1]}juta",
+                                        text = "Rp ${it[1]}miliar",
                                         fontWeight = FontWeight.Normal,
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier
@@ -144,7 +144,7 @@ fun SkedulSetoranTableEditable(
                     }
                     if(!isThereData.value){
                         Text(
-                            text = "EMPTY",
+                            text = "-",
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -159,7 +159,7 @@ fun SkedulSetoranTableEditable(
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
-                Text(text = "Rp ${totalCapitalPerYear.toString()}juta",
+                Text(text = "Rp ${totalCapitalPerYear.toString()}miliar",
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(10.dp)
                 )
@@ -175,7 +175,7 @@ fun SkedulSetoranTableEditable(
             text = { Text("Anda memilih data dengan informasi: \n" +
                     "Pemegang Saham: ${pemegangSahamChosen.value}\n" +
                     "Tahun: ${tahunChosen.value}\n" +
-                    "Nominal: Rp ${nominalChosen.value}juta\n")},
+                    "Nominal: Rp ${nominalChosen.value}miliar\n")},
             onDismissRequest = {openDialogDeleteOrUpdate.value = false},
             buttons = {
                 Row(modifier = Modifier
@@ -209,7 +209,7 @@ fun SkedulSetoranTableEditable(
             text = { Text("Anda memilih data dengan informasi: \n" +
                     "Pemegang Saham: ${pemegangSahamChosen.value}\n" +
                     "Tahun: ${tahunChosen.value}\n" +
-                    "Nominal: Rp ${nominalChosen.value}juta\n")},
+                    "Nominal: Rp ${nominalChosen.value}miliar\n")},
             onDismissRequest = {openDialogDelete.value = false},
             buttons = {
                 Row(modifier = Modifier

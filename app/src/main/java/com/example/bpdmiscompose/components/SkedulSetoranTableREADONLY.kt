@@ -91,7 +91,7 @@ fun SkedulSetoranTableREADONLY(skedulSetoranList: List<SkedulSetoranModal> = exa
                             sked.ListTahunNominal.forEach{it ->
                                 if(it[0] == tahun){
                                     Text(
-                                        text = "Rp ${it[1]}juta",
+                                        text = "Rp ${it[1]}miliar",
                                         fontWeight = FontWeight.Normal,
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier
@@ -106,14 +106,14 @@ fun SkedulSetoranTableREADONLY(skedulSetoranList: List<SkedulSetoranModal> = exa
                     }
                     if(!isThereData.value){
                         Text(
-                            text = "EMPTY",
+                            text = "-",
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(10.dp)
                         )
                     }
                 }
-                Text(text = "Rp ${totalCapitalPerYear.toString()}juta", textAlign = TextAlign.Center, modifier = Modifier.padding(10.dp))
+                Text(text = "Rp ${totalCapitalPerYear.toString()}miliar", textAlign = TextAlign.Center, modifier = Modifier.padding(10.dp))
             }
         }
     }

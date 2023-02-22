@@ -30,7 +30,8 @@ class SkedulSetoranRepositoryImpl @Inject constructor(
         SKEDUL_SETORAN_COLLECTION_REF
     )
 
-    override suspend fun getSkedulSetoran(): Flow<Resources<List<SkedulSetoranModal>>> = callbackFlow {
+    override suspend fun getSkedulSetoran()
+    : Flow<Resources<List<SkedulSetoranModal>>> = callbackFlow {
         var snapshotStateListener: ListenerRegistration? = null
         try {
             snapshotStateListener = skedulSetoranRef

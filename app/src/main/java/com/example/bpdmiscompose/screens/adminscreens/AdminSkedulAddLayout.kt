@@ -84,16 +84,16 @@ fun AdminSkedulAddLayout(modifier: Modifier = Modifier, skedulSetoranViewModel: 
         item{
             Text(text = stringResource(id = R.string.nominal), fontWeight = FontWeight.Medium, modifier = Modifier.padding(start = 10.dp))
             Row (modifier = Modifier.fillMaxWidth().padding(20.dp)){
-                Text(text = "Rp", textAlign = TextAlign.Start, modifier = Modifier.weight(.15f).align(Alignment.CenterVertically).padding(end = 5.dp))
+                Text(text = "Rp", textAlign = TextAlign.Start, modifier = Modifier.weight(.1f).align(Alignment.CenterVertically).padding(end = 5.dp))
                 TextInputBox(
                     value = nominalChosen.value,
                     label = R.string.dalam_juta_rupiah,
                     onValueChange = {nominalChosen.value = it},
-                    modifier = Modifier.weight(.7f),
+                    modifier = Modifier.weight(.6f),
                     focusManager = focusManager,
                     keyboardType = KeyboardType.Number,
                 )
-                Text(text = "Juta", textAlign = TextAlign.Start, modifier= Modifier.weight(.15f).align(Alignment.CenterVertically).padding(start = 5.dp))
+                Text(text = "Miliar", textAlign = TextAlign.Start, modifier= Modifier.weight(.3f).align(Alignment.CenterVertically).padding(start = 5.dp))
             }
 
         }
@@ -114,7 +114,7 @@ fun AdminSkedulAddLayout(modifier: Modifier = Modifier, skedulSetoranViewModel: 
                         try{
                             require((Regex("^\\d{1,4}\$").matches(tahunChosen.value))){"Tahun kosong atau tidak valid. Mohon periksa kembali."}
                             require((pemdaChosen.value != "")){"Pemda kosong atau tidak valid. Mohon periksa kembali."}
-                            require((Regex("^\\d{1,9}\$").matches(nominalChosen.value))){"Modal kosong atau tidak valid. Mohon pastikan data dalam juta rupiah."}
+                            require((Regex("^\\d{1,9}\$").matches(nominalChosen.value))){"Modal kosong atau tidak valid. Mohon pastikan data dalam miliar rupiah."}
                             skedulSetoranViewModel.addSkedulSetoran(context, msg, pemdaChosen.value, tahunChosen.value.toInt(), nominalChosen.value.toLong())
                         } catch (e: Exception){
                             Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
