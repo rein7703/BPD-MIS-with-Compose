@@ -48,29 +48,38 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun addUser(email: String, password: String, passwordAdmin : String, onComplete: (Boolean) -> Unit) {
+    override suspend fun addUser(email: String, password: String, emailAdmin:String, passwordAdmin : String, onComplete: (Boolean) -> Unit) {
         try {
-            val userKept = currentUser
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener() { task ->
+            val credential = EmailAuthProvider.getCredential(emailAdmin, passwordAdmin)
+            currentUser?.reauthenticate(credential)?.addOnCompleteListener {task ->
                 if (task.isSuccessful) {
-                    onComplete(true)
-                    Log.d(TAG, "createUserWithEmail:success")
-                    logout()
-                    userKept?.email?.let {taskGetCredential ->
-                        EmailAuthProvider.getCredential(
-                            taskGetCredential, passwordAdmin)
-                    }?.let { userKept?.reauthenticate(it)?.addOnCompleteListener{taskReauthenticate->
-                        if (taskReauthenticate.isSuccessful){
-                            Log.d(TAG, "Berhasil login lagi.")
+                    Log.d(TAG, "User re-authenticated.")
+                    firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener() { task ->
+                        if (task.isSuccessful) {
+                            onComplete(true)
+                            Log.d(TAG, "createUserWithEmail:success")
+                            logout()
+                            firebaseAuth.signInWithEmailAndPassword(emailAdmin, passwordAdmin).addOnCompleteListener { task ->
+                                Log.i(TAG, "User re-login: ${emailAdmin} $passwordAdmin")
+                                if (task.isSuccessful) {
+                                    Log.d(TAG, "Berhasil login lagi.")
+                                } else {
+                                    Log.d(TAG, "Gagal login lagi")
+                                }
+                            }
                         } else {
-                            Log.d(TAG, "Gagal login lagi")
+                            onComplete(false)
+                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
                         }
-                    } }
+                    }
+                    onComplete(true)
                 } else {
+                    Log.d(TAG, "User re-authenticated failed. ${task.exception}")
                     onComplete(false)
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
                 }
             }
+
+
         } catch (e: Exception) {
             onComplete(false)
             e.printStackTrace()

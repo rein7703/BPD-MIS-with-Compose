@@ -46,9 +46,9 @@ class AuthViewModel @Inject constructor(
         _loginFlow.value = null
         _signupFlow.value=null
     }
-    fun addUser(email : String, password: String, passwordAdmin : String, onComplete: (Boolean) -> Unit = {}) = viewModelScope.launch {
+    fun addUser(email : String, password: String, emailAdmin: String, passwordAdmin : String, onComplete: (Boolean) -> Unit = {}) = viewModelScope.launch {
         try{
-            repository.addUser(email, password, passwordAdmin, onComplete)
+            repository.addUser(email, password, emailAdmin, passwordAdmin, onComplete)
         } catch (e: Exception) {
             e.printStackTrace()
             throw e

@@ -7,5 +7,6 @@ data class UserDataClass (
     val nomorHP : String = "",
     val email : String = "",
     val status : Boolean = false,
-    val dataId : String = ""
+    val dataId : String = "",
+    val uid : String = ""
 )

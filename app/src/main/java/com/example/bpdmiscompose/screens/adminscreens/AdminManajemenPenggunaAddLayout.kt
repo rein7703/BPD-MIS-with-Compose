@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bpdmiscompose.R
@@ -146,7 +147,8 @@ fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
-                focusManager = focusManager
+                focusManager = focusManager,
+                keyboardType = KeyboardType.Number
             )
         }
 
@@ -183,26 +185,35 @@ fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel
                     Button(
                         onClick =   {
                             try{
-                                viewModel.addUser(emailChosen.value, passwordChosen.value, passwordAdmin.value)
-                                userDataViewModel.addUserData(
-                                    name = namaChosen.value,
-                                    email = emailChosen.value,
-                                    jabatan = jabatanChosen.value,
-                                    idPegawai = idPegawaiChosen.value,
-                                    nomorHp = nomorHPChosen.value,
-                                    status = statusChosen.value,
-                                    onComplete = {
-                                        if(it){
-                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                                        } else{
-                                            Toast.makeText(context, "Data gagal ditambahkan", Toast.LENGTH_SHORT).show()
-                                        }
+                                require(Regex(".{7,}").matches(passwordChosen.value)){"Password must be at least 6 characters"}
+                                require((Regex("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")).matches(emailChosen.value)){"Email tidak valid"}
+                                viewModel.addUser(email = emailChosen.value, password = passwordChosen.value, emailAdmin = viewModel.currentUser?.email ?: "" ,passwordAdmin = passwordAdmin.value, onComplete = {
+                                    if(it){
+                                        userDataViewModel.addUserData(
+                                            name = namaChosen.value,
+                                            email = emailChosen.value,
+                                            jabatan = jabatanChosen.value,
+                                            idPegawai = idPegawaiChosen.value,
+                                            nomorHp = nomorHPChosen.value,
+                                            status = statusChosen.value,
+                                            onComplete = {isAdded->
+                                                if(isAdded){
+                                                    /* GOOD */
+                                                } else{
+                                                    Toast.makeText(context, "Data gagal ditambahkan. Mohon periksa kembali isian anda dan pastikan password admin anda benar", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        )
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                    } else{
+                                        Toast.makeText(context, "Data gagal ditambahkan. Mohon periksa admin password", Toast.LENGTH_SHORT).show()
                                     }
-                                )
+
+                                })
+
 
                             }catch(e: Exception){
                                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                             }
                                     }
                         , modifier = Modifier

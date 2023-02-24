@@ -46,6 +46,7 @@ fun AdminSetoranModalLayout (staffSetoranModalViewModel : StaffSetoranModalViewM
                     .wrapContentSize(Alignment.TopStart)
                     .padding(20.dp),
                 onItemSelected = {
+
                     selectedItem = it
                     Log.i(ContentValues.TAG, "the selected item is ${selectedItem.toString()}")
                 }
@@ -63,7 +64,7 @@ fun AdminSetoranModalLayout (staffSetoranModalViewModel : StaffSetoranModalViewM
                 when (staffSetoranModalUiState.setoranList) {
                     is Resources.Loading -> CircularProgressIndicator()
                     is Resources.Success -> {
-                        if (selectedItem == drawerItems[0]) {
+                        if (selectedItem == drawerItems[0]) LaunchedEffect(key1 = Unit){
                             staffSetoranModalViewModel.loadAll()
 
                         } else {

@@ -60,7 +60,7 @@ fun StaffSetoranModalLayout (
             when (staffSetoranModalUiState.setoranList) {
                 is Resources.Loading -> CircularProgressIndicator()
                 is Resources.Success -> {
-                    if (selectedItem == drawerItems[0]) {
+                    if (selectedItem == drawerItems[0]) LaunchedEffect(Unit){
                         staffSetoranModalViewModel.loadAll()
                     } else {
                         staffSetoranModalViewModel.loadByYear(selectedItem!!.toInt())

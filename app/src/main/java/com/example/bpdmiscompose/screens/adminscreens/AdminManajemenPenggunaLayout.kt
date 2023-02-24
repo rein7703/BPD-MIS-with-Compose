@@ -146,22 +146,24 @@ fun AdminManajemenPenggunaLayout (modifier: Modifier = Modifier, navController:N
                     }
                 }
             }
-        }
-        Row(modifier = Modifier.padding(20.dp)){
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)){
 
-            }
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .weight(1f),
-                horizontalAlignment = Alignment.End) {
-                Button(onClick = {navController.navigate(BPDMISScreen.AdminManajemenPenggunaAdd.name)}) {
-                    Text(text = stringResource(id = R.string.add))
+            item {Row(modifier = Modifier.padding(20.dp)){
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)){
+
                 }
-            }
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                    horizontalAlignment = Alignment.End) {
+                    Button(onClick = {navController.navigate(BPDMISScreen.AdminManajemenPenggunaAdd.name)}) {
+                        Text(text = stringResource(id = R.string.add))
+                    }
+                }
+            }}
         }
+
     }
 
 

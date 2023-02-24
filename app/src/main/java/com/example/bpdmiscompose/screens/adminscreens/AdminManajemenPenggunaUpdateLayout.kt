@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bpdmiscompose.R
@@ -96,7 +97,7 @@ fun AdminManajemenPenggunaUpdateLayout(viewModel : AuthViewModel, userDataViewMo
             Dropdown(
                 jabatan,
                 label = stringResource(id = R.string.jabatan),
-                default = stringResource(id = R.string.jabatan),
+                default = jabatanChosen.value,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
@@ -137,7 +138,8 @@ fun AdminManajemenPenggunaUpdateLayout(viewModel : AuthViewModel, userDataViewMo
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
-                focusManager = focusManager
+                focusManager = focusManager,
+                keyboardType = KeyboardType.Number
             )
         }
 
@@ -166,6 +168,7 @@ fun AdminManajemenPenggunaUpdateLayout(viewModel : AuthViewModel, userDataViewMo
                     Button(
                         onClick =   {
                             try{
+                                require((Regex("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")).matches(emailChosen.value)){"Email tidak valid"}
                                 userDataViewModel.updateUserData(
                                     dataId = dataIdChosen.value,
                                     name = namaChosen.value,
@@ -185,7 +188,6 @@ fun AdminManajemenPenggunaUpdateLayout(viewModel : AuthViewModel, userDataViewMo
 
                             }catch(e: Exception){
                                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                             }
                         }
                         , modifier = Modifier
