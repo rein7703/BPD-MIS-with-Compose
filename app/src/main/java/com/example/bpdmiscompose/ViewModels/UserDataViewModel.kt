@@ -32,10 +32,25 @@ class UserDataViewModel @Inject constructor (
         }
     }
 
+    fun updateUserData(dataId : String, idPegawai : String, name : String, jabatan : String, email : String, nomorHp : String, status : Boolean, onComplete : (Boolean) -> Unit = {}) = viewModelScope.launch {
+        try {
+            repository.updateUserData(dataId = dataId, idPegawai = idPegawai, name = name, jabatan = jabatan, email = email, nomorHP = nomorHp, status = status, onComplete = onComplete)
+        } catch (e: Exception) {
+            Log.i(TAG, e.message.toString())
+        }
+    }
+
 
 
     fun addUserData(idPegawai : String, name : String, jabatan : String, email : String, nomorHp : String, status : Boolean, onComplete : (Boolean) -> Unit = {}) = viewModelScope.launch {
         repository.addUserData(idPegawai = idPegawai, name = name, jabatan = jabatan, email = email, nomorHP = nomorHp, status = status, onComplete = onComplete)
+    }
+
+    fun setUserDataChosen(userData : UserDataClass) = viewModelScope.launch {
+        userDataUiState = userDataUiState.copy(userDataChosen = Resources.Success(userData))
+    }
+    fun deleteUserData(dataId: String, onComplete: (Boolean) -> Unit = {}) = viewModelScope.launch {
+        repository.deleteUserData(dataId = dataId, onComplete = onComplete)
     }
 
 
@@ -44,5 +59,6 @@ class UserDataViewModel @Inject constructor (
 
 data class UserDataUiState(
     val userDataList : Resources<List<UserDataClass>> = Resources.Loading(),
-    val userData: Resources<UserDataClass> = Resources.Loading()
+    val userData: Resources<UserDataClass> = Resources.Loading(),
+    val userDataChosen : Resources<UserDataClass> = Resources.Loading()
 )

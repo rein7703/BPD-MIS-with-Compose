@@ -56,7 +56,9 @@ fun adminNavGraph(
             skedulSetoranViewModel = skedulSetoranViewModel,
             indikatorKeuanganViewModel = indikatorKeuanganViewModel,
             rbbViewModel = rbbViewModel,
-            viewModel = viewModel)
+            viewModel = viewModel,
+            userDataViewModel = userDataViewModel,
+            )
         changeNavGraph(navController = navController, viewModel = viewModel)
     }
 }
@@ -69,6 +71,7 @@ fun NavGraphBuilder.adminNavGraphBuild(
     indikatorKeuanganViewModel: IndikatorKeuanganViewModel,
     rbbViewModel: RBBViewModel,
     viewModel: AuthViewModel,
+    userDataViewModel: UserDataViewModel,
 ){
     navigation(
         startDestination = BPDMISScreen.AdminProfile.name,
@@ -76,11 +79,11 @@ fun NavGraphBuilder.adminNavGraphBuild(
     ){
 
         composable(route = BPDMISScreen.AdminManajemenPengguna.name){
-            AdminManajemenPenggunaLayout(navController = navController)
+            AdminManajemenPenggunaLayout(navController = navController, userDataViewModel = userDataViewModel)
         }
 
         composable(route = BPDMISScreen.AdminManajemenPenggunaAdd.name){
-            AdminManajemenPenggunaAddLayout(viewModel=viewModel)
+            AdminManajemenPenggunaAddLayout(userDataViewModel = userDataViewModel, viewModel=viewModel)
         }
 
         composable(route = BPDMISScreen.AdminSetoranModal.name){
@@ -145,6 +148,10 @@ fun NavGraphBuilder.adminNavGraphBuild(
 
         composable(route = BPDMISScreen.AdminIndikatorRBBAdd.name){
             AdminIndikatorAddRBB(rbbViewModel = rbbViewModel)
+        }
+
+        composable(route = BPDMISScreen.AdminManajemenPenggunaUpdate.name){
+            AdminManajemenPenggunaUpdateLayout( userDataViewModel = userDataViewModel,viewModel = viewModel)
         }
 
     }

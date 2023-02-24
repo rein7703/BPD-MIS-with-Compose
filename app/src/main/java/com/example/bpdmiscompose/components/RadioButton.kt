@@ -19,10 +19,12 @@ import androidx.compose.ui.unit.dp
 @Preview
 @Composable
 fun RadioButtonSample(
+    default : Boolean = false,
     radioOptions: List<String> = emptyList(),
     onOptionSelected: (String) -> Unit = {}
 ) {
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
+    val defaultOption = if (default) radioOptions[0] else radioOptions[1]
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(defaultOption) }
     Column {
         radioOptions.forEach { text ->
             Row(

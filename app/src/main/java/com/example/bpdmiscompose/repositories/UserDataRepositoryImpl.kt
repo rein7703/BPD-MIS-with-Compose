@@ -32,7 +32,7 @@ class UserDataRepositoryImpl @Inject constructor(
         USERS_REF
     )
 
-    override fun getAllUserData(): Flow<Resources<List<UserDataClass>>> = callbackFlow  {
+    override suspend fun getAllUserData(): Flow<Resources<List<UserDataClass>>> = callbackFlow  {
         var snapshotStateListener: ListenerRegistration? = null
         try {
             snapshotStateListener = usersRef
@@ -55,7 +55,7 @@ class UserDataRepositoryImpl @Inject constructor(
             snapshotStateListener?.remove()
         }
     }
-    override fun getUserData(email : String) : Flow<Resources<UserDataClass>> = flow{
+    override suspend fun getUserData(email : String) : Flow<Resources<UserDataClass>> = flow{
         try {
             val result = usersRef.whereEqualTo("email", email).get().await()
             if(result.documents.isNotEmpty()){
@@ -71,7 +71,7 @@ class UserDataRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun addUserData(name: String, idPegawai: String, jabatan: String, nomorHP: String, email: String, status: Boolean, onComplete : (Boolean) -> Unit) {
+    override suspend fun addUserData(name: String, idPegawai: String, jabatan: String, nomorHP: String, email: String, status: Boolean, onComplete : (Boolean) -> Unit) {
         try {
             val documentId = usersRef.document().id
             val user = UserDataClass(
@@ -93,5 +93,45 @@ class UserDataRepositoryImpl @Inject constructor(
             Resource.Failure(e)
         }
     }
+
+    override suspend fun updateUserData(dataId : String, idPegawai : String, name : String, jabatan : String, email : String, nomorHP : String, status : Boolean, onComplete : (Boolean) -> Unit){
+        try {
+            val doc = usersRef.whereEqualTo("email", email).get().await()
+            if (doc.isEmpty || doc.documents[0].id == dataId) {
+                val updateData = hashMapOf<String, Any>(
+                    "name" to name,
+                    "idPegawai" to idPegawai,
+                    "jabatan" to jabatan,
+                    "nomorHP" to nomorHP,
+                    "email" to email,
+                    "status" to status
+                )
+                usersRef.document(dataId).set(updateData)
+                    .addOnCompleteListener { result ->
+                        onComplete.invoke(result.isSuccessful)
+                    }
+            } else {
+                onComplete.invoke(false)
+            }
+        } catch (e: Exception) {
+            onComplete.invoke(false)
+            e.printStackTrace()
+        }
+    }
+
+    override suspend fun deleteUserData(dataId : String, onComplete : (Boolean) -> Unit){
+        try {
+            usersRef.document(dataId).delete()
+                .addOnCompleteListener{result->
+                    onComplete.invoke(result.isSuccessful)
+                }
+        } catch (e: Exception) {
+            onComplete.invoke(false)
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+
+
 
 }

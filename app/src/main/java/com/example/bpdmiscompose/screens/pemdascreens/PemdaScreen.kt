@@ -1,5 +1,6 @@
 package com.example.bpdmiscompose
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,6 +41,7 @@ fun PemdaScreen(
 ){
     LaunchedEffect(key1 = Unit){userDataViewModel.getUserData(viewModel.currentUser?.email ?: "No Email")}
     val userDataUiState = userDataViewModel.userDataUiState
+    Log.i(userDataUiState.userDataList.data?.get(0)?.name.toString(), "PemdaScreen: ")
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val buttonItems = listOf<ButtonInfo>(

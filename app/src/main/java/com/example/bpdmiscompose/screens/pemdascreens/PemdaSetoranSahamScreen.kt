@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bpdmiscompose.R
 import com.example.bpdmiscompose.components.Dropdown
-import com.example.bpdmiscompose.repositories.Resources
 import com.example.bpdmiscompose.dataClass.SetoranModal
+import com.example.bpdmiscompose.repositories.Resources
 import com.example.bpdmiscompose.roboto
 import com.example.bpdmiscompose.screens.pemdascreens.PemdaViewModel
 
@@ -34,8 +34,10 @@ fun PemdaSetoranSahamScreen(
 ){
     val pemdaSetoranUiState = pemdaViewModel.pemdaSetoranUiState
     pemdaViewModel.getYearList("Pemprov DIY")
+    val yearListUnsorted = pemdaSetoranUiState.yearList.data?.map { it.toString() }
+    val yearList = yearListUnsorted?.sortedDescending()
     val drawerItems =
-        listOf("Pilih Tahun").plus(pemdaSetoranUiState.yearList.data?.map { it.toString() }
+        listOf("Pilih Tahun").plus(yearList
             ?: emptyList())
     var selectedItem by remember { mutableStateOf<String>(drawerItems[0]) }
 

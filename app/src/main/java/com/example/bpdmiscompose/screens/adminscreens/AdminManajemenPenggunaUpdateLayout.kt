@@ -1,8 +1,12 @@
 package com.example.bpdmiscompose.screens.adminscreens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -23,22 +27,21 @@ import com.example.bpdmiscompose.ViewModels.UserDataViewModel
 import com.example.bpdmiscompose.components.Dropdown
 import com.example.bpdmiscompose.components.RadioButtonSample
 import com.example.bpdmiscompose.components.TextInputBox
-import com.example.bpdmiscompose.components.TextInputBoxPassword
 
 @Composable
-fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel : UserDataViewModel = hiltViewModel()){
+fun AdminManajemenPenggunaUpdateLayout(viewModel : AuthViewModel, userDataViewModel : UserDataViewModel = hiltViewModel()){
 
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
-
-    val namaChosen = remember { mutableStateOf("") }
-    val emailChosen = remember { mutableStateOf("") }
-    val passwordChosen = remember { mutableStateOf("") }
-    val jabatanChosen = remember { mutableStateOf("") }
-    val statusChosen = remember { mutableStateOf(false) }
-    val idPegawaiChosen = remember { mutableStateOf("") }
-    val nomorHPChosen = remember{ mutableStateOf("") }
-    val passwordAdmin = remember{ mutableStateOf("") }
+    val dataChosen = userDataViewModel.userDataUiState.userDataChosen.data
+    Log.i("TAG", "UPDATE LAYOUT: ${dataChosen.toString()}")
+    val namaChosen = remember { mutableStateOf(dataChosen?.name ?: "") }
+    val emailChosen = remember { mutableStateOf(dataChosen?.email ?: "") }
+    val jabatanChosen = remember { mutableStateOf(dataChosen?.jabatan ?: "") }
+    val statusChosen = remember { mutableStateOf(dataChosen?.status ?: false) }
+    val idPegawaiChosen = remember { mutableStateOf(dataChosen?.idPegawai ?: "") }
+    val nomorHPChosen = remember{ mutableStateOf(dataChosen?.nomorHP ?: "") }
+    val dataIdChosen = remember { mutableStateOf(dataChosen?.dataId ?: "") }
     LazyColumn(
         modifier = Modifier
             .padding(20.dp)
@@ -61,18 +64,6 @@ fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel
                 focusManager = focusManager
             )
         }
-
-        //Password
-        item {
-            Text(
-                text = stringResource(id = R.string.prompt_password),
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(start = 10.dp)
-            )
-            TextInputBoxPassword(value = passwordChosen.value, label = R.string.prompt_password, modifier = Modifier.fillMaxWidth(), onValueChange = { passwordChosen.value = it }, focusManager = focusManager)
-        }
-
-
 
         // Nama
         item {
@@ -160,18 +151,10 @@ fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel
             )
             val aktifId = listOf(R.string.aktif, R.string.non_aktif)
             val aktif = aktifId.map { stringResource(id = it) }
-            RadioButtonSample(radioOptions = aktif, onOptionSelected = { statusChosen.value = it == aktif[0] })
+            RadioButtonSample(default = statusChosen.value, radioOptions = aktif, onOptionSelected = { statusChosen.value = it == aktif[0] })
         }
 
-        //Password
-        item {
-            Text(
-                text = "Password Admin",
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(start = 10.dp)
-            )
-            TextInputBoxPassword(value = passwordAdmin.value, label = R.string.prompt_password, modifier = Modifier.fillMaxWidth(), onValueChange = { passwordAdmin.value = it }, focusManager = focusManager)
-        }
+
 
         //Button
         item {
@@ -179,12 +162,12 @@ fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel
                 Column(modifier = Modifier.weight(1f)) {
                 }
                 Column(modifier = Modifier.weight(1f)) {
-                    val msg = stringResource(id = R.string.data_berhasil_ditambahkan)
+                    val msg = stringResource(id = R.string.data_berhasil_diubah)
                     Button(
                         onClick =   {
                             try{
-                                viewModel.addUser(emailChosen.value, passwordChosen.value, passwordAdmin.value)
-                                userDataViewModel.addUserData(
+                                userDataViewModel.updateUserData(
+                                    dataId = dataIdChosen.value,
                                     name = namaChosen.value,
                                     email = emailChosen.value,
                                     jabatan = jabatanChosen.value,
@@ -204,12 +187,12 @@ fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel
                                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                             }
-                                    }
+                        }
                         , modifier = Modifier
                             .fillMaxSize()
                             .padding(20.dp)
                     ) {
-                        Text(text = stringResource(id = R.string.add))
+                        Text(text = stringResource(id = R.string.update))
                     }
                 }
             }

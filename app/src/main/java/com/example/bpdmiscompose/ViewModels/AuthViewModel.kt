@@ -64,4 +64,13 @@ class AuthViewModel @Inject constructor(
             throw e
         }
     }
+
+    /*fun deleteUser(email: String, password : String, onComplete : (Boolean) -> Unit = {}) = viewModelScope.launch {
+        try{
+            repository.deleteUser(email, password, onComplete)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+    }*/
 }

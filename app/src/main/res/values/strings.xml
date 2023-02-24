@@ -49,6 +49,7 @@
     <string name = "admin_profile">Admin Profile</string>
     <string name = "admin_drawer">Admin Drawer</string>
     <string name = "admin_manajemen_pengguna">Manajemen Pengguna</string>
+    <string name = "admin_manajemen_pengguna_update">Update Pengguna</string>
     <string name = "admin_setoran_modal">Admin Setoran Modal</string>
     <string name = "admin_skedul_setoran">Admin Skedul Setoran Modal</string>
     <string name= "admin_indikator_keuangan">Admin Indikator Keuangan Utama</string>
