@@ -74,8 +74,11 @@ enum class BPDMISScreen(@StringRes val title:Int){
     AdminSkedulSetoran(title = R.string.admin_skedul_setoran),
     AdminIndikatorKeuangan(title = R.string.admin_indikator_keuangan),
     AdminIndikatorAdd(title = R.string.admin_indikator_add ),
+    AdminIndikatorUpdateLayout(title = R.string.admin_update_indikator),
     AdminIndikatorSearchResult(title = R.string.admin_indikator_search_result),
     AdminIndikatorAllData(title = R.string.admin_indikator_all_data),
+    AdminIndikatorRBBAdd(title = R.string.admin_indikator_rbb_add),
+    AdminIndikatorRBBUpdate(title = R.string.admin_indikator_rbb_update),
     AdminPenggunaAdd(title = R.string.admin_pengguna_add),
     AdminSetoranAdd(title = R.string.admin_setoran_add),
     AdminSetoranUpdate(title = R.string.admin_setoran_update),
@@ -159,7 +162,7 @@ fun NavGraphBuilder.landingNavGraph(
         }
 
         //Go to the admin pages graph
-        changeNavGraph(navController = navController)
+        changeNavGraph(navController = navController, viewModel = viewModel)
         composable(route = BPDMISScreen.AdminPage.name){
             AdminScreen(
                 viewModel = viewModel,

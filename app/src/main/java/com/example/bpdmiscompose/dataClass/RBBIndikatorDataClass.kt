@@ -9,5 +9,5 @@ data class RBBIndikatorDataClass(
     val tahun: Int = 0,
     val nominal: Double = 0.0,
     val timestamp: Timestamp = Timestamp.now(),
-    val RBBId : String = "",
+    val rbbid : String = "",
 )

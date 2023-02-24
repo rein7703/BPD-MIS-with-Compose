@@ -64,6 +64,8 @@
     <string name="admin_update_skedul">Update Row Skedul Setoran</string>
     <string name="admin_update_pengguna">Update Row Pengguna</string>
     <string name="admin_update_indikator">Update Row Indikator Keuangan</string>
+    <string name="admin_indikator_rbb_add">Add Data to Indikator Keuangan RBB</string>
+    <string name="admin_indikator_rbb_update">Update Row Indikator Keuangan RBB</string>
     <string name="admin_setoran_add">Add Data to Setoran Modal</string>
     <string name="admin_skedul_crud">Admin Skedul Setoran Modal CRUD</string>
     <string name="pilih_tahun">Pilih Tahun</string>
@@ -163,4 +165,7 @@
     <string name="data_berhasil_diubah">Data Berhasil Diubah</string>
     <string name="admin_skedul_berdasarkan_tahun">Admin Skedul Berdasarkan Tahun</string>
     <string name="admin_skedul_berdasarkan_pemda">Admin Skedul Berdasarkan Pemda</string>
+    <string name = "id_pegawai">ID Pegawai</string>
+    <string name="name">Name</string>
+    <string name="status">Status</string>
 </resources>

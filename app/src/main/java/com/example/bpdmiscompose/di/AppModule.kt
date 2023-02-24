@@ -29,4 +29,6 @@ class AppModule {
     @Provides
     fun IndikatorKeuanganRepository(impl : IndikatorKeuanganRepositoryImpl) : IndikatorKeuanganRepository = impl
 
+    @Provides
+    fun provideUserDataRepository(impl : UserDataRepositoryImpl) : UserDataRepository = impl
 }

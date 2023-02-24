@@ -23,7 +23,6 @@ fun BankStaffProfileLayout(
     staffName : String,
     staffJabatan : String,
     staffId : String,
-    staffAddress : String,
     staffEmail : String,
     staffPhoneNumber : String,
     modifier : Modifier = Modifier
@@ -53,7 +52,6 @@ fun BankStaffProfileLayout(
         ){
             val identitasList = listOf<TextAndIcon>(
                 TextAndIcon(text = staffJabatan, icon = Icons.Filled.Person),
-                TextAndIcon(text = staffAddress, icon = Icons.Filled.Home),
                 TextAndIcon(text = staffId, icon = Icons.Filled.Badge),
                 TextAndIcon(text = staffEmail , icon = Icons.Filled.Email),
                 TextAndIcon(text = staffPhoneNumber, icon = Icons.Filled.Phone)
@@ -63,6 +61,4 @@ fun BankStaffProfileLayout(
             }
         }
     }
-
-
 }

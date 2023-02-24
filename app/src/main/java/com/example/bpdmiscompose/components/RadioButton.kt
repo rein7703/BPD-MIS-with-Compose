@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RadioButtonSample(
     radioOptions: List<String> = emptyList(),
+    onOptionSelected: (String) -> Unit = {}
 ) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
     Column {

@@ -9,6 +9,7 @@ import com.example.bpdmiscompose.BPDMISScreen
 import com.example.bpdmiscompose.ChangePasswordScreen
 import com.example.bpdmiscompose.ChangePasswordSuccessScreen
 import com.example.bpdmiscompose.Graph
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
 
 
 /*
@@ -27,6 +28,7 @@ fun changeNavGraph(
 
 fun NavGraphBuilder.changeNavGraph(
     navController: NavHostController,
+    viewModel:AuthViewModel
 
 ){
     navigation(
@@ -42,7 +44,8 @@ fun NavGraphBuilder.changeNavGraph(
                             inclusive = true
                         }
                     }
-                }
+                },
+                viewModel= viewModel
             )
         }
         //Go to Successfully Change Password Page
@@ -53,6 +56,7 @@ fun NavGraphBuilder.changeNavGraph(
                         popUpTo(navController.graph.findStartDestination().id){
                             inclusive = true
                         }
+                        navController.popBackStack()
                     }
                 }
             )

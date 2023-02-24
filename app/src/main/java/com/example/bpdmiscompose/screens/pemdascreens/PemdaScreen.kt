@@ -8,22 +8,21 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
+import com.example.bpdmiscompose.ViewModels.UserDataViewModel
 import com.example.bpdmiscompose.components.Drawer
 import com.example.bpdmiscompose.components.TopBarBack
 import com.example.bpdmiscompose.components.TopBarMenu
-import com.example.bpdmiscompose.ViewModels.AuthViewModel
 import com.example.bpdmiscompose.nav.pemdaNavGraph
 import kotlinx.coroutines.launch
 
@@ -36,8 +35,11 @@ fun PemdaScreen(
     onClickSignOut : String,
     navController: NavHostController = rememberNavController(),
     navControllerOut : NavHostController,
+    userDataViewModel : UserDataViewModel = hiltViewModel()
 
 ){
+    LaunchedEffect(key1 = Unit){userDataViewModel.getUserData(viewModel.currentUser?.email ?: "No Email")}
+    val userDataUiState = userDataViewModel.userDataUiState
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val buttonItems = listOf<ButtonInfo>(
@@ -102,8 +104,8 @@ fun PemdaScreen(
         drawerContent = if(!topBarMenuState.value) null else {{
             Drawer(
                 icon = Icons.Filled.AccountCircle,
-                name = stringResource(R.string.nama),
-                jabatan = stringResource(R.string.jabatan),
+                name = userDataUiState.userData.data?.name ?: stringResource(R.string.nama),
+                jabatan = userDataUiState.userData.data?.jabatan ?: stringResource(R.string.jabatan),
                 buttons = buttonItems,
                 navController = navController,
                 scaffoldState = scaffoldState,
@@ -116,6 +118,6 @@ fun PemdaScreen(
             .fillMaxWidth()
             .fillMaxHeight()
     ){innerPadding->
-        pemdaNavGraph(navController = navController, modifier = Modifier.padding(innerPadding))
+        pemdaNavGraph(navController = navController, modifier = Modifier.padding(innerPadding), viewModel = viewModel)
     }
 }

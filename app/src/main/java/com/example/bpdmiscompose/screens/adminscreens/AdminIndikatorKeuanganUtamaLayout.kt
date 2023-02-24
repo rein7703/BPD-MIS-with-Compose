@@ -167,32 +167,29 @@ fun AdminIndikatorKeuanganUtamaLayout (
                     horizontalAlignment = Alignment.End) {
                     Button(onClick = {
                         try{
+                            require(jenisKinerjaChosen.value != "") {"Pastikan jenis kinerja tidak kosong"}
+                            require(jenisKantorChosen.value != "") {"Pastikan jenis kantor tidak kosong"}
+                            require(tahunChosen.value != "") {"Pastikan tahun tidak kosong"}
+                            require(bulanChosen.value != 0) {"Pastikan bulan tidak kosong"}
                             indikatorKeuanganViewModel.getIndikatorByParams(jenisKinerja = jenisKinerjaChosen.value, jenisKantor = jenisKantorChosen.value, tahun = tahunChosen.value.toInt(), bulan = bulanChosen.value)
+                            indikatorKeuanganViewModel.getIndikatorByParamsPreviousYear(jenisKinerja = jenisKinerjaChosen.value, jenisKantor = jenisKantorChosen.value, tahun = tahunChosen.value.toInt() - 1, bulan = bulanChosen.value)
+                            indikatorKeuanganViewModel.setJenisKinerja(jenisKinerjaChosen.value)
+                            indikatorKeuanganViewModel.setJenisKantor(jenisKantorChosen.value)
+                            indikatorKeuanganViewModel.setTahun(tahunChosen.value.toInt())
+                            indikatorKeuanganViewModel.setTahunConst(tahunChosen.value.toInt())
+                            indikatorKeuanganViewModel.setBulan(bulanChosen.value)
+
                             hasRedirected.value = false
                             pageSelected.value = 2
                         }catch (e: Exception) {
-                            Log.e(ContentValues.TAG, "${e.message.toString()}. Masukkan data dengan benar. Pastikan tidak ada data yang kosong")
-                            Toast.makeText(context, "${e.message.toString()}. Masukkan data dengan benar. Pastikan tidak ada data yang kosong", Toast.LENGTH_SHORT).show()
+                            Log.e(ContentValues.TAG, "${e.message.toString()}. Mohon masukkan data dengan benar.")
+                            Toast.makeText(context, "${e.message.toString()}. Mohon masukkan data dengan benar.", Toast.LENGTH_SHORT).show()
                         }
                     }
                     ) {
                         Text(text = stringResource(id = R.string.search))
                     }
 
-                    Button(onClick = {
-                        try{
-                            indikatorKeuanganViewModel.getIndikatorKeuangan()
-                            hasRedirected.value = false
-                            pageSelected.value = 1
-                        }
-                        catch (e: Exception){
-                            Log.e(ContentValues.TAG, e.message.toString())
-                            Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    ){
-                        Text(text = "Show All")
-                    }
                 }
             }
         }

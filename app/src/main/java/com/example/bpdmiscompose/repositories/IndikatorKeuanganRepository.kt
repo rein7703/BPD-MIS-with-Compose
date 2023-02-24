@@ -11,6 +11,7 @@ interface IndikatorKeuanganRepository {
     suspend fun getYearList(): Flow<Resources<List<Int>>>
     suspend fun getIndikatorKeuangan(): Flow<Resources<List<IndikatorDataClass>>>
     suspend fun getIndikatorByParams(jenisKinerja : String, jenisKantor : String, tahun : Int, bulan : Int) : Flow<Resources<List<IndikatorDataClass>>>
+    suspend fun getIndikatorSingular(kantor: String, jenisKantor: String, jenisKinerja: String, tahun: Int, bulan: Int) : Flow<Resources<IndikatorDataClass>>
     suspend fun addIndikatorKeuangan(kantor : String, jenisKantor: String, jenisKinerja: String,tahun : Int, bulan : Int, nominal : Double, onComplete: (Boolean) -> Unit)
     suspend fun updateIndikatorKeuangan(indikatorID : String, kantor: String, jenisKantor: String, jenisKinerja: String, tahun: Int, bulan: Int, nominal: Double, onResult : (Boolean) -> Unit = {})
     suspend fun deleteIndikatorKeuangan(indikatorID: String, onComplete : (Boolean) -> Unit = {})

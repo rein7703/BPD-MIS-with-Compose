@@ -23,13 +23,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.bpdmiscompose.R
 import com.example.bpdmiscompose.ViewModels.IndikatorKeuanganViewModel
-import com.example.bpdmiscompose.ViewModels.RBBViewModel
 import com.example.bpdmiscompose.components.Dropdown
 import com.example.bpdmiscompose.components.TextInputBox
 
-
 @Composable
-fun AdminIndikatorAddLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewModel, rbbViewModel: RBBViewModel){
+fun AdminIndikatorUpdateLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewModel){
     val indikatorKeuanganUiState = indikatorKeuanganViewModel.indikatorKeuanganUiState
     val monthsId = listOf(
         R.string.januari, R.string.februari,
@@ -43,7 +41,8 @@ fun AdminIndikatorAddLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewMod
     val jenisKinerjaChosen = remember{ mutableStateOf(indikatorKeuanganUiState.jenisKinerjaChosen) }
     val jenisKantorChosen = remember{ mutableStateOf(indikatorKeuanganUiState.jenisKantorChosen) }
     val kantorChosen = remember{ mutableStateOf(indikatorKeuanganUiState.kantorChosen) }
-    val nominalChosen = remember{ mutableStateOf("") }
+    val nominalChosen = remember{ mutableStateOf(indikatorKeuanganUiState.nominalChosen.toString()) }
+    val idChosen = remember{ mutableStateOf(indikatorKeuanganUiState.idChosen.toString()) }
 
 
     LazyColumn(
@@ -64,12 +63,12 @@ fun AdminIndikatorAddLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewMod
                 label = R.string.pilih_tahun,
                 onValueChange = {tahunChosen.value = it},
                 modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 20.dp, end = 20.dp),
+                    .fillMaxSize()
+                    .padding(start = 20.dp, end = 20.dp),
                 keyboardType = KeyboardType.Number,
                 focusManager = focusManager,
 
-            )
+                )
         }
 
         // Periode Bulan
@@ -132,8 +131,8 @@ fun AdminIndikatorAddLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewMod
                 label = R.string.pilih_cabang,
                 onValueChange = {kantorChosen.value = it},
                 modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
+                    .fillMaxSize()
+                    .padding(20.dp),
                 focusManager = focusManager)
         }
 
@@ -146,8 +145,8 @@ fun AdminIndikatorAddLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewMod
                 label = R.string.dalam_juta_rupiah,
                 onValueChange = {nominalChosen.value = it},
                 modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
+                    .fillMaxSize()
+                    .padding(20.dp),
                 focusManager = focusManager,
                 keyboardType = KeyboardType.Number
             )
@@ -170,20 +169,20 @@ fun AdminIndikatorAddLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewMod
 
                     Button(onClick = {
                         try {
-                            indikatorKeuanganViewModel.addIndikatorKeuangan(
+                            indikatorKeuanganViewModel.updateIndikatorKeuangan(
+                                indikatorID = idChosen.value,
                                 kantor = kantorChosen.value,
                                 bulan = bulanChosen.value,
                                 tahun = tahunChosen.value.toInt(),
                                 jenisKantor = jenisKantorChosen.value,
                                 jenisKinerja = jenisKinerjaChosen.value,
                                 nominal = nominalChosen.value.toDouble(),
-                                onComplete = {
+                                onResult = {
                                     if(it){
-                                        Toast.makeText(context, "Berhasil Menambahkan Data", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Berhasil Mengubah Data", Toast.LENGTH_SHORT).show()
                                     } else {
-                                        Toast.makeText(context, "Data ${jenisKinerjaChosen.value} untuk ${kantorChosen.value} bulan ${months[bulanChosen.value - 1]} tahun ${tahunChosen.value} sudah ada. Mohon lakukan ubah data saja", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Data ${jenisKinerjaChosen.value} untuk ${kantorChosen.value} bulan ${months[bulanChosen.value - 1]} tahun ${tahunChosen.value} sudah ada.", Toast.LENGTH_SHORT).show()
                                     }
-
                                 },
                             )
                         }catch (e:Exception){
@@ -194,7 +193,7 @@ fun AdminIndikatorAddLayout(indikatorKeuanganViewModel: IndikatorKeuanganViewMod
                         .fillMaxWidth()
                         .padding(20.dp)
                     ) {
-                        Text(text = "ADD")
+                        Text(text = "UPDATE!")
                     }
                 }
             }

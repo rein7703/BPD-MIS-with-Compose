@@ -12,6 +12,7 @@ import androidx.navigation.navigation
 import com.example.bpdmiscompose.BPDMISScreen
 import com.example.bpdmiscompose.PemdaBranchRoute
 import com.example.bpdmiscompose.PemdaRoute
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
 import com.example.bpdmiscompose.screens.PemdaSetoranSahamScreen
 
 
@@ -19,6 +20,7 @@ import com.example.bpdmiscompose.screens.PemdaSetoranSahamScreen
 fun pemdaNavGraph(
     navController: NavHostController,
     modifier : Modifier = Modifier,
+    viewModel : AuthViewModel
 
 ){
     NavHost(
@@ -31,7 +33,7 @@ fun pemdaNavGraph(
         }
 
         pemdaNavGraphBuild(navController = navController)
-        changeNavGraph(navController = navController)
+        changeNavGraph(navController = navController, viewModel = viewModel)
         //landingNavGraph(navController = navController, auth = auth)
     }
 }

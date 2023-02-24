@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.example.bpdmiscompose.*
-import com.example.bpdmiscompose.ViewModels.SkedulSetoranViewModel
+import com.example.bpdmiscompose.ViewModels.*
 import com.example.bpdmiscompose.screens.staffscreens.*
 import com.example.bpdmiscompose.ui.BankStaffUiState
 
@@ -17,27 +17,31 @@ import com.example.bpdmiscompose.ui.BankStaffUiState
 fun staffNavGraph(
     navController: NavHostController,
     BankStaffUiState: BankStaffUiState = BankStaffUiState(),
-    skedulSetoranViewModel: SkedulSetoranViewModel = hiltViewModel()
+    skedulSetoranViewModel: SkedulSetoranViewModel = hiltViewModel(),
+    indikatorKeuanganViewModel: IndikatorKeuanganViewModel = hiltViewModel(),
+    rbbViewModel: RBBViewModel = hiltViewModel(),
+    userDataViewModel : UserDataViewModel = hiltViewModel(),
+    viewModel: AuthViewModel,
 
-){
+
+    ){
+    val userDataUiState = userDataViewModel.userDataUiState
     NavHost(
         navController= navController,
         route = Graph.StaffRoute.name,
         startDestination = BPDMISScreen.Profile.name
     ){
         composable(route = BPDMISScreen.Profile.name) {
-            //BankStaffUiState.enableProfileButton = false
             BankStaffProfileLayout(
-                staffName = BankStaffUiState.staffName,
-                staffJabatan = BankStaffUiState.staffJabatan,
-                staffAddress = BankStaffUiState.staffAddress,
-                staffEmail = BankStaffUiState.staffEmail,
-                staffPhoneNumber = BankStaffUiState.staffPhoneNumber,
-                staffId = BankStaffUiState.staffID,
+                staffName = userDataUiState.userData.data?.name ?: BankStaffUiState.staffName,
+                staffJabatan = userDataUiState.userData.data?.jabatan ?: BankStaffUiState.staffJabatan,
+                staffEmail = userDataUiState.userData.data?.email ?: BankStaffUiState.staffEmail,
+                staffPhoneNumber = userDataUiState.userData.data?.nomorHP ?: BankStaffUiState.staffPhoneNumber,
+                staffId = userDataUiState.userData.data?.idPegawai ?: BankStaffUiState.staffID,
             )
         }
-        staffNavGraphBuild(navController, BankStaffUiState = BankStaffUiState, skedulSetoranViewModel = skedulSetoranViewModel)
-        changeNavGraph(navController = navController)
+        staffNavGraphBuild(navController, BankStaffUiState = BankStaffUiState, skedulSetoranViewModel = skedulSetoranViewModel, indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
+        changeNavGraph(navController = navController, viewModel = viewModel)
         //landingNavGraph(navController = navController, auth = auth)
     }
 }
@@ -45,8 +49,9 @@ fun staffNavGraph(
 fun NavGraphBuilder.staffNavGraphBuild(
     navController: NavHostController,
     BankStaffUiState: BankStaffUiState,
-    skedulSetoranViewModel: SkedulSetoranViewModel
-
+    skedulSetoranViewModel: SkedulSetoranViewModel,
+    indikatorKeuanganViewModel: IndikatorKeuanganViewModel,
+    rbbViewModel: RBBViewModel
 ){
     navigation(
         //navController = navController,
@@ -64,7 +69,7 @@ fun NavGraphBuilder.staffNavGraphBuild(
         }
         composable(route = BPDMISScreen.ReadIndikatorKeuangan.name) {
             BankStaffUiState.enableProfileButton = true
-            StaffIndikatorKeuanganUtamaLayout(navController = navController)
+            StaffIndikatorKeuanganUtamaLayout(navController = navController, indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
         }
 
         composable(route = BPDMISScreen.StaffSemuaSkedul.name){
@@ -83,7 +88,7 @@ fun NavGraphBuilder.staffNavGraphBuild(
 
         composable(route=BPDMISScreen.StaffIndikatorSearchResult.name){
             BankStaffUiState.enableProfileButton = false
-            StaffIndikatorSearchResultScreen()
+            StaffIndikatorSearchResultScreen(navController = navController, indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
         }
 
     }

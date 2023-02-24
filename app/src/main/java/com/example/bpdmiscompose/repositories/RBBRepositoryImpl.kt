@@ -41,7 +41,9 @@ class RBBRepositoryImpl @Inject constructor(
                         Resources.Error(throwable = e?.cause)
                     }
                     trySend(response)
+
                 }
+
 
         } catch (e: Exception) {
             trySend(Resources.Error(e?.cause))
@@ -51,11 +53,10 @@ class RBBRepositoryImpl @Inject constructor(
             snapshotStateListener?.remove()
         }
     }
-    override suspend fun getRBBByMetrics(kantor : String, tahun : Int, jenisKinerja: String)
+    override suspend fun getRBBByMetrics(tahun : Int, jenisKinerja: String)
     : Flow<Resources<RBBIndikatorDataClass>> = flow {
         try {
             val result = rbbRef
-                .whereEqualTo("kantor", kantor)
                 .whereEqualTo("tahun", tahun)
                 .whereEqualTo("jenisKinerja", jenisKinerja)
                 .get().await()
@@ -69,7 +70,7 @@ class RBBRepositoryImpl @Inject constructor(
 
     override suspend fun addRBB(kantor : String,  jenisKinerja: String, tahun : Int, nominal: Double, onComplete : (Boolean) -> Unit)
     {
-        val doc = rbbRef.whereEqualTo("tahun", tahun).whereEqualTo("jenisKinerja", jenisKinerja).whereEqualTo("kantor", kantor).get().await()
+        val doc = rbbRef.whereEqualTo("kantor", kantor).whereEqualTo("jenisKinerja", jenisKinerja).whereEqualTo("tahun", tahun).get().await()
         if(doc.isEmpty){
             val documentId = rbbRef.document().id
             val rbb = RBBIndikatorDataClass(
@@ -77,7 +78,7 @@ class RBBRepositoryImpl @Inject constructor(
                 jenisKinerja = jenisKinerja,
                 tahun = tahun,
                 nominal = nominal,
-                RBBId = documentId
+                rbbid = documentId
             )
             rbbRef
                 .document(documentId)
@@ -100,7 +101,6 @@ class RBBRepositoryImpl @Inject constructor(
                 "tahun" to tahun,
                 "nominal" to nominal
             )
-
             rbbRef
                 .document(RBBId)
                 .update(updateData)

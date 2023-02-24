@@ -2,6 +2,7 @@ package com.example.bpdmiscompose.nav
 
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,10 +15,7 @@ import com.example.bpdmiscompose.AdminBranchRoute
 import com.example.bpdmiscompose.AdminRoute
 import com.example.bpdmiscompose.BPDMISScreen
 import com.example.bpdmiscompose.R
-import com.example.bpdmiscompose.ViewModels.IndikatorKeuanganViewModel
-import com.example.bpdmiscompose.ViewModels.RBBViewModel
-import com.example.bpdmiscompose.ViewModels.SkedulSetoranViewModel
-import com.example.bpdmiscompose.ViewModels.StaffSetoranModalViewModel
+import com.example.bpdmiscompose.ViewModels.*
 import com.example.bpdmiscompose.screens.AdminIndikatorKeuanganUtamaLayout
 import com.example.bpdmiscompose.screens.AdminManajemenPenggunaLayout
 import com.example.bpdmiscompose.screens.AdminSetoranModalLayout
@@ -32,8 +30,12 @@ fun adminNavGraph(
     staffSetoranModalViewModel: StaffSetoranModalViewModel = hiltViewModel(),
     skedulSetoranViewModel: SkedulSetoranViewModel = hiltViewModel(),
     indikatorKeuanganViewModel: IndikatorKeuanganViewModel = hiltViewModel(),
-    rbbViewModel: RBBViewModel = hiltViewModel()
+    rbbViewModel: RBBViewModel = hiltViewModel(),
+    userDataViewModel: UserDataViewModel = hiltViewModel(),
+    viewModel: AuthViewModel,
 ){
+    LaunchedEffect(key1 = Unit){userDataViewModel.getUserData(viewModel.currentUser?.email ?: "No Email")}
+    val userDataUiState = userDataViewModel.userDataUiState
     NavHost(
         navController= navController,
         route = AdminRoute,
@@ -41,17 +43,21 @@ fun adminNavGraph(
     ){
         composable(route = BPDMISScreen.AdminProfile.name){
             AdminProfileLayout(
-                adminName = stringResource(id = R.string.nama),
-                adminEmail = stringResource(id = R.string.email),
-                adminAddress = stringResource(id = R.string.alamat),
-                adminPhoneNumber = stringResource(id = R.string.nomor_hp),
-                adminId = stringResource(id = R.string.id),
-                adminJabatan = stringResource(id = R.string.jabatan),
+                adminName = userDataUiState.userData.data?.name ?: stringResource(id = R.string.nama),
+                adminEmail = userDataUiState.userData.data?.email ?: stringResource(id = R.string.email),
+                adminPhoneNumber = userDataUiState.userData.data?.nomorHP ?: stringResource(id = R.string.nomor_hp),
+                adminId = userDataUiState.userData.data?.idPegawai ?: stringResource(id = R.string.id),
+                adminJabatan = userDataUiState.userData.data?.jabatan ?: stringResource(id = R.string.jabatan),
             )
         }
 
-        adminNavGraphBuild(navController = navController, staffSetoranModalViewModel = staffSetoranModalViewModel, skedulSetoranViewModel = skedulSetoranViewModel, indikatorKeuanganViewModel = indikatorKeuanganViewModel, rbbViewModel = rbbViewModel)
-        changeNavGraph(navController = navController)
+        adminNavGraphBuild(navController = navController,
+            staffSetoranModalViewModel = staffSetoranModalViewModel,
+            skedulSetoranViewModel = skedulSetoranViewModel,
+            indikatorKeuanganViewModel = indikatorKeuanganViewModel,
+            rbbViewModel = rbbViewModel,
+            viewModel = viewModel)
+        changeNavGraph(navController = navController, viewModel = viewModel)
     }
 }
 
@@ -61,7 +67,8 @@ fun NavGraphBuilder.adminNavGraphBuild(
     staffSetoranModalViewModel: StaffSetoranModalViewModel,
     skedulSetoranViewModel: SkedulSetoranViewModel,
     indikatorKeuanganViewModel: IndikatorKeuanganViewModel,
-    rbbViewModel: RBBViewModel
+    rbbViewModel: RBBViewModel,
+    viewModel: AuthViewModel,
 ){
     navigation(
         startDestination = BPDMISScreen.AdminProfile.name,
@@ -73,7 +80,7 @@ fun NavGraphBuilder.adminNavGraphBuild(
         }
 
         composable(route = BPDMISScreen.AdminManajemenPenggunaAdd.name){
-            AdminManajemenPenggunaAddLayout()
+            AdminManajemenPenggunaAddLayout(viewModel=viewModel)
         }
 
         composable(route = BPDMISScreen.AdminSetoranModal.name){
@@ -128,6 +135,17 @@ fun NavGraphBuilder.adminNavGraphBuild(
             AdminSkedulBerdasarkanPemdaLayout(skedulSetoranViewModel = skedulSetoranViewModel)
         }
 
+        composable(route = BPDMISScreen.AdminIndikatorUpdateLayout.name){
+            AdminIndikatorUpdateLayout(indikatorKeuanganViewModel = indikatorKeuanganViewModel)
+        }
+
+        composable(route = BPDMISScreen.AdminIndikatorRBBUpdate.name){
+            AdminIndikatorUpdateRBB(rbbViewModel = rbbViewModel)
+        }
+
+        composable(route = BPDMISScreen.AdminIndikatorRBBAdd.name){
+            AdminIndikatorAddRBB(rbbViewModel = rbbViewModel)
+        }
 
     }
 }

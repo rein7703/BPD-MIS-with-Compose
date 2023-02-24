@@ -9,7 +9,7 @@ interface RBBRepository{
     suspend fun hasUser(): Boolean
     suspend fun getUserId():String
     suspend fun getRBB(): Flow<Resources<List<RBBIndikatorDataClass>>>
-    suspend fun getRBBByMetrics(kantor : String, tahun : Int, jenisKinerja: String): Flow<Resources<RBBIndikatorDataClass>>
+    suspend fun getRBBByMetrics(tahun : Int, jenisKinerja: String): Flow<Resources<RBBIndikatorDataClass>>
     suspend fun addRBB(kantor : String, jenisKinerja: String, tahun : Int, nominal: Double, onComplete : (Boolean) -> Unit = {})
     suspend fun updateRBB(RBBId : String, kantor: String, jenisKinerja: String, tahun: Int, nominal: Double, onResult : (Boolean) -> Unit = {})
     suspend fun deleteRBB(RBBId : String, onComplete: (Boolean) -> Unit = {})

@@ -77,6 +77,8 @@ fun LoginScreen(
                                                if(customClaims["isAdmin"] as Boolean) {onAdminButtonClicked()}
                                                 else if(customClaims["isKomisaris"] as Boolean || customClaims["isDireksi"] as Boolean || customClaims["isDivisi"] as Boolean){onStaffButtonClicked()}
                                                 else if(customClaims["isPemda"] as Boolean){onPemdaButtonClicked()}
+                                            }else {
+                                                onPemdaButtonClicked()
                                             }
                                         }
                                     } else {

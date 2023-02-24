@@ -202,7 +202,6 @@ fun SkedulSetoranTableEditable(
         )
     }
 
-
     if (openDialogDelete.value) {
         AlertDialog(
             title = { Text("Apa yang ingin anda lakukan dengan data yang dipilih?") },
@@ -227,7 +226,6 @@ fun SkedulSetoranTableEditable(
             }
         )
     }
-
 
     if (openDialogAdd.value) {
         AlertDialog(
@@ -255,6 +253,8 @@ fun SkedulSetoranTableEditable(
             }
         )
     }
+
+
 }
 
 

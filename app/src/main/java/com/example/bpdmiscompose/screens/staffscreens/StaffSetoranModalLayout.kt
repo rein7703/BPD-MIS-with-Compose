@@ -32,9 +32,11 @@ fun StaffSetoranModalLayout (
     val staffSetoranModalViewModel: StaffSetoranModalViewModel = hiltViewModel()
     val staffSetoranModalUiState = staffSetoranModalViewModel.staffSetoranModalUiState
     val context = LocalContext.current
+    val yearsUnsorted = staffSetoranModalUiState.yearList.data?.map { it.toString() }
     val drawerItems =
-        listOf("Lihat Semua Data").plus(staffSetoranModalUiState.yearList.data?.map { it.toString() }
-            ?: listOf("Lihat Semua Data"))
+        listOf("Lihat Semua Data").plus(yearsUnsorted?.sortedDescending()
+            ?: emptyList()
+        )
     var selectedItem by remember { mutableStateOf<String>(drawerItems[0]) }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {

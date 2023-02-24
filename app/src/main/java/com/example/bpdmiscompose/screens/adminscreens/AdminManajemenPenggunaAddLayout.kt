@@ -2,14 +2,13 @@ package com.example.bpdmiscompose.screens.adminscreens
 
 import android.widget.Toast
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -17,21 +16,65 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bpdmiscompose.R
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
+import com.example.bpdmiscompose.ViewModels.UserDataViewModel
 import com.example.bpdmiscompose.components.Dropdown
 import com.example.bpdmiscompose.components.RadioButtonSample
 import com.example.bpdmiscompose.components.TextInputBox
+import com.example.bpdmiscompose.components.TextInputBoxPassword
 
 @Composable
-fun AdminManajemenPenggunaAddLayout() {
+fun AdminManajemenPenggunaAddLayout(viewModel : AuthViewModel, userDataViewModel : UserDataViewModel = hiltViewModel()){
+
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+
+    val namaChosen = remember { mutableStateOf("") }
+    val emailChosen = remember { mutableStateOf("") }
+    val passwordChosen = remember { mutableStateOf("") }
+    val jabatanChosen = remember { mutableStateOf("") }
+    val statusChosen = remember { mutableStateOf(false) }
+    val idPegawaiChosen = remember { mutableStateOf("") }
+    val nomorHPChosen = remember{ mutableStateOf("") }
+    val passwordAdmin = remember{ mutableStateOf("") }
     LazyColumn(
         modifier = Modifier
             .padding(20.dp)
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) }
     ) {
-        // Nama Cabang
+        // Email
+        item {
+            Text(
+                text = stringResource(id = R.string.email),
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+            TextInputBox(
+                value = emailChosen.value,
+                label = R.string.email,
+                onValueChange = {emailChosen.value = it},
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                focusManager = focusManager
+            )
+        }
+
+        //Password
+        item {
+            Text(
+                text = stringResource(id = R.string.prompt_password),
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+            TextInputBoxPassword(value = passwordChosen.value, label = R.string.prompt_password, modifier = Modifier.fillMaxWidth(), onValueChange = { passwordChosen.value = it }, focusManager = focusManager)
+        }
+
+
+
+        // Nama
         item {
             Text(
                 text = stringResource(id = R.string.nama),
@@ -39,7 +82,10 @@ fun AdminManajemenPenggunaAddLayout() {
                 modifier = Modifier.padding(start = 10.dp)
             )
             TextInputBox(
-                label = R.string.nama_lengkap, onValueChange = {}, modifier = Modifier
+                value = namaChosen.value,
+                label = R.string.nama_lengkap,
+                onValueChange = {namaChosen.value = it},
+                modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
                 focusManager = focusManager
@@ -58,13 +104,52 @@ fun AdminManajemenPenggunaAddLayout() {
             val jabatan = jabatanId.map { stringResource(id = it) }
             Dropdown(
                 jabatan,
-                stringResource(id = R.string.jabatan),
+                label = stringResource(id = R.string.jabatan),
                 default = stringResource(id = R.string.jabatan),
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(20.dp)
+                    .padding(20.dp),
+                onItemSelected = { jabatanChosen.value = it }
             )
         }
+
+        // Id Pegawai
+        item {
+            Text(
+                text = stringResource(id = R.string.id_pegawai),
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+            TextInputBox(
+                value = idPegawaiChosen.value,
+                label = R.string.id_pegawai,
+                onValueChange = {idPegawaiChosen.value = it},
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                focusManager = focusManager
+            )
+        }
+
+
+        // Nomor HP
+        item {
+            Text(
+                text = stringResource(id = R.string.nomor_hp),
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+            TextInputBox(
+                value = nomorHPChosen.value,
+                label = R.string.nomor_hp,
+                onValueChange = {nomorHPChosen.value = it},
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                focusManager = focusManager
+            )
+        }
+
 
         // Active / Not Active
         item {
@@ -75,7 +160,17 @@ fun AdminManajemenPenggunaAddLayout() {
             )
             val aktifId = listOf(R.string.aktif, R.string.non_aktif)
             val aktif = aktifId.map { stringResource(id = it) }
-            RadioButtonSample(aktif)
+            RadioButtonSample(aktif, onOptionSelected = { statusChosen.value = it == aktif[0] })
+        }
+
+        //Password
+        item {
+            Text(
+                text = "Password Admin",
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+            TextInputBoxPassword(value = passwordAdmin.value, label = R.string.prompt_password, modifier = Modifier.fillMaxWidth(), onValueChange = { passwordAdmin.value = it }, focusManager = focusManager)
         }
 
         //Button
@@ -86,9 +181,31 @@ fun AdminManajemenPenggunaAddLayout() {
                 Column(modifier = Modifier.weight(1f)) {
                     val msg = stringResource(id = R.string.data_berhasil_ditambahkan)
                     Button(
-                        onClick = {
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                        }, modifier = Modifier
+                        onClick =   {
+                            try{
+                                viewModel.addUser(emailChosen.value, passwordChosen.value, passwordAdmin.value)
+                                userDataViewModel.addUserData(
+                                    name = namaChosen.value,
+                                    email = emailChosen.value,
+                                    jabatan = jabatanChosen.value,
+                                    idPegawai = idPegawaiChosen.value,
+                                    nomorHp = nomorHPChosen.value,
+                                    status = statusChosen.value,
+                                    onComplete = {
+                                        if(it){
+                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                        } else{
+                                            Toast.makeText(context, "Data gagal ditambahkan", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                )
+
+                            }catch(e: Exception){
+                                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                            }
+                                    }
+                        , modifier = Modifier
                             .fillMaxSize()
                             .padding(20.dp)
                     ) {

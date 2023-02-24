@@ -15,15 +15,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.bpdmiscompose.ViewModels.AuthViewModel
+import com.example.bpdmiscompose.ViewModels.UserDataViewModel
 import com.example.bpdmiscompose.components.Drawer
 import com.example.bpdmiscompose.components.TopBarBack
 import com.example.bpdmiscompose.components.TopBarMenu
-import com.example.bpdmiscompose.ViewModels.AuthViewModel
 import com.example.bpdmiscompose.nav.staffNavGraph
 import com.example.bpdmiscompose.ui.BankStaffViewModel
 import kotlinx.coroutines.launch
@@ -38,9 +40,12 @@ fun BankStaffScreen(
     navControllerOut : NavHostController,
     onClickSignOut : String = "",
     onClickChangePassword : String = "",
+    userDataViewModel : UserDataViewModel = hiltViewModel()
 ){
     val loginFlow = viewModel.loginFlow.collectAsState()
     val BankStaffUiState by bankStaffViewModel.uiState.collectAsState()
+    LaunchedEffect(key1 = Unit){userDataViewModel.getUserData(viewModel.currentUser?.email ?: "No Email")}
+    val userDataUiState = userDataViewModel.userDataUiState
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val drawerItems = listOf<TextAndIcon>(
@@ -112,8 +117,8 @@ fun BankStaffScreen(
         drawerContent = if(!topBarMenuState.value) null else {{
             Drawer(
                 icon = Icons.Filled.AccountCircle,
-                name = stringResource(id = R.string.nama),
-                jabatan = stringResource(id = R.string.jabatan),
+                name = userDataUiState.userData.data?.name ?: "Nama",
+                jabatan = userDataUiState.userData.data?.jabatan ?: "Jabatan",
                 items = drawerItems,
                 buttons = buttonItems,
                 navController = navController,
@@ -127,8 +132,7 @@ fun BankStaffScreen(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {innerPadding ->
-
-        staffNavGraph(navController = navController, BankStaffUiState = BankStaffUiState)
+        staffNavGraph(navController = navController, BankStaffUiState = BankStaffUiState, viewModel = viewModel)
     }
 }
 

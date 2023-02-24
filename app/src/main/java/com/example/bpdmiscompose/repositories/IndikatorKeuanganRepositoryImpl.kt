@@ -1,5 +1,8 @@
 package com.example.bpdmiscompose.repositories
 
+import android.content.ContentValues
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.bpdmiscompose.dataClass.IndikatorDataClass
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -91,6 +94,35 @@ class IndikatorKeuanganRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getIndikatorSingular(
+        kantor: String,
+        jenisKantor: String,
+        jenisKinerja: String,
+        tahun: Int,
+        bulan: Int
+    ): Flow<Resources<IndikatorDataClass>> = flow {
+        try {
+            val result = indikatorKeuanganRef
+                .whereEqualTo("kantor", kantor)
+                .whereEqualTo("jenisKantor", jenisKantor)
+                .whereEqualTo("jenisKinerja", jenisKinerja)
+                .whereEqualTo("tahun", tahun)
+                .whereEqualTo("bulan", bulan)
+                .limit(1)
+                .get().await()
+
+            if(result.documents.isNotEmpty()){
+                val resultAsClass = result.documents[0].toObject(IndikatorDataClass::class.java)
+                emit(Resources.Success(resultAsClass))
+                Log.i(ContentValues.TAG, "${Resources.Success(resultAsClass.toString())}")
+                emit(Resources.Success(resultAsClass))
+            }else {
+                emit(Resources.Success(IndikatorDataClass()))
+            }
+        } catch (e: Exception) {
+            emit(Resources.Error(e))
+        }
+    }
     override suspend fun addIndikatorKeuangan(
         kantor: String,
         jenisKantor: String,
@@ -136,6 +168,7 @@ class IndikatorKeuanganRepositoryImpl @Inject constructor(
         onResult: (Boolean) -> Unit
     )  {
         val doc = indikatorKeuanganRef.whereEqualTo("kantor", kantor).whereEqualTo("tahun", tahun).whereEqualTo("bulan", bulan).get().await()
+        Log.i(TAG, "updateIndikatorKeuangan: ${doc.documents[0].id}, $indikatorID")
         if (doc.isEmpty || doc.documents[0].id == indikatorID){
             val updateData = hashMapOf<String, Any>(
                 "kantor" to kantor,

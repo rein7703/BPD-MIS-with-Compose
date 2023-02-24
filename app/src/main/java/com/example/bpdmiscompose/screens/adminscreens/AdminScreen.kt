@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -24,6 +25,7 @@ import com.example.bpdmiscompose.ButtonInfo
 import com.example.bpdmiscompose.R
 import com.example.bpdmiscompose.TextAndIcon
 import com.example.bpdmiscompose.ViewModels.AuthViewModel
+import com.example.bpdmiscompose.ViewModels.UserDataViewModel
 import com.example.bpdmiscompose.components.Drawer
 import com.example.bpdmiscompose.components.TopBarBack
 import com.example.bpdmiscompose.components.TopBarMenu
@@ -48,9 +50,13 @@ fun AdminScreen(
     navControllerOut:NavHostController,
     onClickSignOut : String = "",
     onClickChangePassword : String = "",
-
+    userDataViewModel : UserDataViewModel = hiltViewModel()
 ){
     val BankStaffUiState by bankStaffViewModel.uiState.collectAsState()
+    val currentUser = viewModel.currentUser
+    val currentEmail = currentUser?.email ?: "No Email"
+    LaunchedEffect(key1 = Unit){userDataViewModel.getUserData(currentEmail)}
+    val userDataUiState = userDataViewModel.userDataUiState
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val drawerItems = listOf<TextAndIcon>(
@@ -132,8 +138,8 @@ fun AdminScreen(
         drawerContent = if(!topBarMenuState.value) null else {{
             Drawer(
                 icon = Icons.Filled.AccountCircle,
-                name = BankStaffUiState.staffName,
-                jabatan = BankStaffUiState.staffJabatan,
+                name = userDataUiState.userData.data?.name ?: "Nama Pengguna",
+                jabatan = userDataUiState.userData.data?.jabatan ?: "Jabatan Pengguna",
                 items = drawerItems,
                 buttons = buttonItems,
                 navController = navController,
@@ -147,7 +153,7 @@ fun AdminScreen(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {innerPadding ->
-        adminNavGraph(navController = navController)
+        adminNavGraph(navController = navController, viewModel = viewModel)
 
     }
 }

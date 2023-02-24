@@ -46,4 +46,22 @@ class AuthViewModel @Inject constructor(
         _loginFlow.value = null
         _signupFlow.value=null
     }
+    fun addUser(email : String, password: String, passwordAdmin : String, onComplete: (Boolean) -> Unit = {}) = viewModelScope.launch {
+        try{
+            repository.addUser(email, password, passwordAdmin, onComplete)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+    }
+
+
+    fun updatePassword(email: String, oldPassword : String, newPassword : String, onComplete : (Boolean) -> Unit = {}) = viewModelScope.launch {
+        try{
+            repository.updatePassword(email, oldPassword, newPassword, onComplete)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+    }
 }

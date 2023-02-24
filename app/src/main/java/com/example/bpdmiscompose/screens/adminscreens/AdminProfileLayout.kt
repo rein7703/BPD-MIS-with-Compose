@@ -23,7 +23,6 @@ fun AdminProfileLayout(
     adminName : String,
     adminJabatan : String,
     adminId : String,
-    adminAddress : String,
     adminEmail : String,
     adminPhoneNumber : String,
     modifier : Modifier = Modifier
@@ -44,7 +43,7 @@ fun AdminProfileLayout(
             Text(stringResource(R.string.identitas), fontSize = 20.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colors.onSurface)
         }
 
-        // For the bottom part of the profile including jabatan, alamat, email, and phoneNumber
+        // For the bottom part of the profile including jabatan, email, and phoneNumber
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,7 +53,6 @@ fun AdminProfileLayout(
         ){
             val identitasList = listOf<TextAndIcon>(
                 TextAndIcon(text = adminJabatan, icon = Icons.Filled.Person),
-                TextAndIcon(text = adminAddress, icon = Icons.Filled.Home),
                 TextAndIcon(text = adminId, icon = Icons.Filled.Badge),
                 TextAndIcon(text = adminEmail , icon = Icons.Filled.Email),
                 TextAndIcon(text = adminPhoneNumber, icon = Icons.Filled.Phone)
